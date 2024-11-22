@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./Tekweb-Proyek/**/*.{html,js}"],
+  content: [
+      "./src/**/*.{html,js}",
+      "./public/**/*.html",
+  ],
   theme: {
     extend: {},
   },
