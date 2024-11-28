@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //kode untuk memasukkan data ke database
     $stmt = $conn->prepare("INSERT INTO products (name, description, price, stock, image) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssdss", $name, $description, $price, $stock, $image);
+    $stmt->bind_param("ssdsi", $name, $description, $price, $stock, $image);
 
     if ($stmt->execute()) {
         echo "Produk berhasil ditambahkan!";
