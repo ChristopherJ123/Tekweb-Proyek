@@ -78,9 +78,9 @@ global $conn
                         <div class="tw-flex tw-flex-col tw-gap-1">
                             <?php
                             $queryForumChats = "
-                        SELECT * FROM forum_chats 
-                        JOIN users u on u.id = forum_chats.user_id
-                        WHERE forum_id = $forumID";
+                                SELECT * FROM forum_chats 
+                                JOIN users u on u.id = forum_chats.user_id
+                                WHERE forum_id = $forumID";
                             $forumChats = mysqli_query($conn, $queryForumChats);
                             foreach ($forumChats as $forumChat) {
                                 $forumChatPP = $forumChat['profile_picture'];
