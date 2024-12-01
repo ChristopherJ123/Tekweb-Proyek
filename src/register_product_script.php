@@ -30,8 +30,8 @@ if (isset($_SESSION['user_id'])) {
         }
 
         //kode untuk memasukkan data ke database
-        $stmt = $conn->prepare("INSERT INTO products (name, description, price, quantity_in_stock, image_link, ]) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssdss", $name, $description, $price, $stock, $image);
+        $stmt = $conn->prepare("INSERT INTO products (name, description, price, quantity_in_stock, image_link, author) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssdsi", $name, $description, $price, $stock, $image, $_SESSION['user_id']);
 
         if ($stmt->execute()) {
             echo "Produk berhasil ditambahkan!";
