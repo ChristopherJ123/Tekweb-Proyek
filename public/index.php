@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "../src/db.php";
 global $conn
 ?>
@@ -29,8 +30,36 @@ global $conn
          }
     </style>
 <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="poppins-regular">
+    <?php
+    if (isset($_SESSION['errors'])) { ?>
+        <script>
+            Swal.fire({
+                title: "Error!",
+                text: "<?= implode("<br>", $_SESSION['errors']) ?>",
+                icon: "error"
+            });
+        </script>
+        <?php
+        unset($_SESSION['errors']);
+    }
+    ?>
+
+    <?php
+    if (isset($_SESSION['success'])) { ?>
+        <script>
+            Swal.fire({
+                title: "Success",
+                text: "<?= $_SESSION['success'] ?>",
+                icon: "success"
+            });
+        </script>
+        <?php
+        unset($_SESSION['success']);
+    }
+    ?>
     <div class="tw-flex tw-flex-col tw-items-center tw-bg-gray-300 tw-gap-2">
         <?php
         // Products
