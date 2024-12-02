@@ -13,10 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (str_contains($usernameOrEmail, '@')) {
         $email = $usernameOrEmail;
-        $query = "SELECT id, email, username, password FROM users WHERE email = '$email'";
+        $query = "SELECT id, email, username, password, profile_picture FROM users WHERE email = '$email'";
     } else {
         $username = $usernameOrEmail;
-        $query = "SELECT id, email, username, password FROM users WHERE username = '$username'";
+        $query = "SELECT id, email, username, password, profile_picture FROM users WHERE username = '$username'";
     }
     $result = mysqli_query($conn, $query);
     if (mysqli_num_rows($result) > 0) {
@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['email'] = $row['email'];
             $_SESSION['username'] = $row['username'];
+            $_SESSION['profile_picture'] = $row['profile_picture'];
             $success = "You have succesfully logged in!";
             $_SESSION['success'] = $success;
             mysqli_close($conn);
