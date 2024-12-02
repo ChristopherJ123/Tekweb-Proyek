@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         //jika ada gambar dapat diupload
         if (!empty($_FILES['gambar']['name'])) {
-            $targetDir = "../public/images/";
+            $targetDir = "../images/";
             if (!is_dir($targetDir)) {
                 mkdir($targetDir, 0755, true); //membuat folder jika belum ada
             }
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = "Ukuran gambar melebihi 2MB";
             }
 
-            $imageName = uniqid() . 'src' . $fileType;
+            $imageName = uniqid() . '.' . $fileType;
             $targetFilePath = $targetDir . $imageName;
 
             if (move_uploaded_file($_FILES['gambar']['tmp_name'], $targetFilePath)) {
