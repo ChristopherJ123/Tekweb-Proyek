@@ -50,12 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             mysqli_close($conn);
         }
-
-        // Error handling
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            header('Location: ../register.php');
-            exit();
-        }
+    }
+    // Error handling
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        header('Location: ../register.php');
+        exit();
     }
 }
