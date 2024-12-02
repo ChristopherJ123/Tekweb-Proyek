@@ -36,11 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Simpan ke database
             $query = "INSERT INTO users (email, username, password, no_telp) VALUES ('$email', '$username', '$hashedPassword', '$phone')";
-            $queryIntoOnlineUsers = "INSERT INTO current_users_online (user_id) VALUES ('$username')";
+            $queryIntoOnlineUsers = "INSERT INTO current_users_online (user_id) SELECT id FROM users WHERE username = '$username'";
             if (mysqli_query($conn, $query)) {
-                $success = "Registration successful! You can now log in.";
-                header('Location: ../public/login.php');
-                exit();
+                if (mysqli_query($conn, $queryIntoOnlineUsers)) {
+                    $success = "Registration successful! You can now log in.";
+                    $_SESSION['success'] = $success;
+                    mysqli_close($conn);
+                    header('Location: ../public/login.php');
+                    exit();
+                }
             } else {
                 $errors[] = "Error: " . mysqli_error($conn);
             }

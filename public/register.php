@@ -136,31 +136,31 @@ session_start()
         <form action="../src/register_user_script.php" method="post">
             <!-- Email -->
             <div class="form-group">
-                <label for="email-id">Email</label>
+                <label for="email-id">Email <b style="color: red">*</b></label>
                 <input type="email" name="email" id="email-id" placeholder="Enter your email" required>
             </div>
 
             <!-- Username -->
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Username <b style="color: red">*</b></label>
                 <input type="text" name="username" id="username" placeholder="Choose a username" required>
             </div>
 
             <!-- Phone -->
             <div class="form-group">
-                <label for="phone">Phone</label>
+                <label for="phone">Phone <b style="color: red">*</b></label>
                 <input type="text" name="phone" id="phone" placeholder="Choose a phone number" required>
             </div>
 
             <!-- Password -->
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Password <b style="color: red">*</b></label>
                 <input type="password" name="password" id="password" placeholder="Create a password" required>
             </div>
 
             <!-- Confirm Password -->
             <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
+                <label for="confirm-password">Confirm Password <b style="color: red">*</b></label>
                 <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm your password" required>
             </div>
 
