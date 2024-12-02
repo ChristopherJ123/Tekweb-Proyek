@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include '../../src/db.php';
 global $conn;
 session_start();
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $success = "Produk berhasil ditambahkan!";
                     $_SESSION['success'] = $success;
                     $stmt->close();
-                    header("Location: ../public/index.php");
+                    header("Location: ../index.php");
                     exit();
                 } else {
                     $errors[] = "Gagal menambahkan produk: " . $stmt->error;
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
-        header("Location: ../public/register_product.php");
+        header("Location: ../register_product.php");
         exit();
     }
 }

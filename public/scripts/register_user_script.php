@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php';
+include '../../src/db.php';
 global $conn;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $success = "Registration successful! You can now log in.";
                     $_SESSION['success'] = $success;
                     mysqli_close($conn);
-                    header('Location: ../public/login.php');
+                    header('Location: ../login.php');
                     exit();
                 }
             } else {
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Error handling
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            header('Location: ../public/register.php');
+            header('Location: ../register.php');
             exit();
         }
     }

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'db.php';
+include '../../src/db.php';
 global $conn;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $success = "You have succesfully logged in!";
             $_SESSION['success'] = $success;
             mysqli_close($conn);
-            header('Location: ../public/index.php');
+            header('Location: ../index.php');
             exit();
         } else {
             $errors[] = "Your credentials does not match our database!";
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (!empty($errors)) {
         $_SESSION['errors'] = $errors;
-        header('Location: ../public/login.php');
+        header('Location: ../login.php');
         exit();
     }
 }
