@@ -146,6 +146,12 @@ session_start()
                 <input type="text" name="username" id="username" placeholder="Choose a username" required>
             </div>
 
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" name="phone" id="phone" placeholder="Choose a phone number" required>
+            </div>
+
             <!-- Password -->
             <div class="form-group">
                 <label for="password">Password</label>

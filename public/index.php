@@ -20,6 +20,7 @@ global $conn
             font-family: "Poppins", sans-serif;
             font-weight: 400;
             font-style: normal;
+            font-size: 1em;
         }
          .material-symbols-outlined {
              font-variation-settings:
@@ -31,6 +32,7 @@ global $conn
     </style>
 <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body class="poppins-regular bg-gray-300">
     <?php
@@ -72,11 +74,33 @@ global $conn
                 <input type="text" id="search" class="w-full h-full p-2" placeholder="Cari di PasarKakiLima">
             </div>
         </form>
-        <div class="flex justify-end items-center gap-2">
+        <div class="flex justify-end items-center gap-2 mr-8">
             <?php
                 if (isset($_SESSION['user_id'])) { ?>
                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
-                    <a href="#"><?=$_SESSION['username']?></a>
+                    <div class="relative flex justify-end">
+                        <a id="profile" href="#"><?=$_SESSION['username']?></a>
+                        <div id="profileDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow" style="display: none">
+                            <div class="flex gap-2">
+                                <span class="material-symbols-outlined">
+                                    account_circle
+                                </span>
+                                <a href="#">Profil saya</a>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="material-symbols-outlined">
+                                    settings
+                                </span>
+                                <a href="#">Pengaturan</a>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="material-symbols-outlined">
+                                    logout
+                                </span>
+                                <a href="logout.php">Logout</a>
+                            </div>
+                        </div>
+                    </div>
                 <?php } else { ?>
                     <a href="login.php" class="p-2 border rounded">
                         Masuk
@@ -137,7 +161,7 @@ global $conn
                 </div>
                 <div class="flex flex-col gap-2 border p-2 shadow">
                     <div>
-                        <p class="mb-2">Discussion:</p>
+                        <p class="mb-2">Diskusi:</p>
                         <div class="flex flex-col gap-1">
                             <?php
                             $queryForumChats = "
@@ -183,5 +207,18 @@ global $conn
         ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        $('#profile').hover(
+            function () {
+                $('#profileDrpDwn').show();
+            }
+        )
+
+        $('#profileDrpDwn').mouseleave(
+            function () {
+                $('#profileDrpDwn').hide();
+            }
+        )
+    </script>
 </body>
 </html>

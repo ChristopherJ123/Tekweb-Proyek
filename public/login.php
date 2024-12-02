@@ -123,16 +123,10 @@ session_start()
     <div class="container">
         <h2>Login</h2>
         <form action="../src/login_user_script.php" method="post">
-            <!-- Email -->
-            <div class="form-group">
-                <label for="email-id">Email</label>
-                <input type="email" name="email" id="email-id" placeholder="Enter your email">
-            </div>
-
             <!-- Username -->
             <div class="form-group">
                 <label for="usernameOrEmail-id">Username</label>
-                <input type="text" name="usernameOrEmail" id="usernameOrEmail-id" placeholder="Enter your username" required>
+                <input type="text" name="usernameOrEmail" id="usernameOrEmail-id" placeholder="Enter your username or email" required>
             </div>
 
             <!-- Password -->
