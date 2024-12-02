@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors[] = "Ukuran gambar melebihi 2MB";
             }
 
-            $imageName = uniqid() . '.' . $fileType;
+            $imageName = uniqid() . 'src' . $fileType;
             $targetFilePath = $targetDir . $imageName;
 
             if (move_uploaded_file($_FILES['gambar']['tmp_name'], $targetFilePath)) {

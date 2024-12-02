@@ -42,7 +42,7 @@ session_start()
     ?>
     <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h1 class="text-2xl font-bold text-center mb-6">Registrasi Produk</h1>
-        <form action="../src/register_product_script.php" method="POST" enctype="multipart/form-data">
+        <form action="scripts/register_product_script.php" method="POST" enctype="multipart/form-data">
             <!--bagian kode ini untuk bagian front end dimana user dapat menginput nama produk yang akan dijual-->
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Nama Produk</label>

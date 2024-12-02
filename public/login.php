@@ -122,7 +122,7 @@ session_start()
 
     <div class="container">
         <h2>Login</h2>
-        <form action="../src/login_user_script.php" method="post">
+        <form action="scripts/login_user_script.php" method="post">
             <!-- Username -->
             <div class="form-group">
                 <label for="usernameOrEmail-id">Username</label>

@@ -133,7 +133,7 @@ session_start()
         <?php } elseif (isset($success)) { ?>
             <div class="message success"><?php echo $success; ?></div>
         <?php } ?>
-        <form action="../src/register_user_script.php" method="post">
+        <form action="scripts/register_user_script.php" method="post">
             <!-- Email -->
             <div class="form-group">
                 <label for="email-id">Email <b style="color: red">*</b></label>
