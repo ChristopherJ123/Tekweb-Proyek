@@ -22,13 +22,21 @@ global $conn
             font-style: normal;
             font-size: 1em;
         }
-         .material-symbols-outlined {
-             font-variation-settings:
-                     'FILL' 0,
-                     'wght' 400,
-                     'GRAD' 0,
-                     'opsz' 24
+        .material-symbols-outlined {
+            font-variation-settings:
+                    'FILL' 0,
+                    'wght' 400,
+                    'GRAD' 0,
+                    'opsz' 24
          }
+        .material-symbols-outlined.text-sm {
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        .material-symbols-outlined.text-base {
+            font-size: 1rem; /* 16px */
+            line-height: 1.5rem; /* 24px */
+        }
     </style>
 <!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -77,10 +85,26 @@ global $conn
         <div class="flex justify-end items-center gap-2 mr-8">
             <?php
                 if (isset($_SESSION['user_id'])) { ?>
+                    <a href="register_product.php" class="flex text-sm p-2 border border-dashed border-black bg-black text-white hover:bg-white hover:text-black transition">
+                        <span class="material-symbols-outlined text-sm pr-1">
+                            add_circle
+                        </span>
+                        Tambahkan Produk
+                    </a>
+                    <div class="relative">
+                        <div id="cart">
+                            <span class="material-symbols-outlined">
+                                shopping_bag
+                            </span>
+                        </div>
+                        <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow border" style="display: none">
+                            p
+                        </div>
+                    </div>
                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
                     <div class="relative flex justify-end">
                         <a id="profile" href="#"><?=$_SESSION['username']?></a>
-                        <div id="profileDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow" style="display: none">
+                        <div id="profileDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow border" style="display: none">
                             <div class="flex gap-2">
                                 <span class="material-symbols-outlined">
                                     account_circle
@@ -143,6 +167,7 @@ global $conn
                 <div class='grid grid-cols-3 gap-2'>
                     <?php
                     foreach ($products as $product) {
+                        $productID = $product['id'];
                         $productImage = $product['image_link'];
                         $productName = $product['name'];
                         $productPrice = number_format($product['price'], 0, ',', '.');
@@ -151,7 +176,30 @@ global $conn
                             <img class='w-[200px] h-[200px] object-cover object-center' src='<?=$productImage?>' alt='product'>
                             <div class="flex flex-col h-full justify-between">
                                 <div class='overflow-hidden text-ellipsis line-clamp-3 mb-3'> <?=$productName?> </div>
-                                <div> Rp<?=$productPrice?> </div>
+                                <div class="flex justify-between items-center">
+                                    <div>Rp<?=$productPrice?></div>
+                                    <div class="flex border border-orange-500 rounded h-5/6 mb-2">
+                                        <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="border-e border-orange-500 text-white bg-orange-500 px-1">
+                                            <span class="material-symbols-outlined text-sm">
+                                                remove
+                                            </span>
+                                        </button>
+                                        <div id="product<?=$productID?>" class="px-1.5 text-orange-500 text-sm">0</div>
+                                        <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" id="decreaseProduct<?=$productID?>" class="border-s border-orange-500 text-white bg-orange-500 px-1">
+                                            <span class="material-symbols-outlined text-sm">
+                                                add
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="flex text-sm p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                                    <span class="material-symbols-outlined text-sm">
+                                        add
+                                    </span>
+                                    <span>
+                                        Masukkan keranjang
+                                    </span>
+                                </button>
                             </div>
 
                         </div>
@@ -188,15 +236,25 @@ global $conn
                     </div>
                     <form action="" method="POST">
                         <div class="flex justify-between border">
-                            <div class="w-full">
+                            <div class="w-full flex items-center">
                                 <label for="forumChat<?=$forumID?>"></label>
-                                <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Chat here">
+                                <?php
+                                    if (isset($_SESSION['user_id'])) { ?>
+                                        <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl ml-2' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
+                                        <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Ngobrol disini">
+                                    <?php } else { ?>
+                                        <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Login terlebih dahulu" disabled>
+                                    <?php }
+                                ?>
                             </div>
-                            <button>
-                                <span class="material-symbols-outlined">
-                                    send
-                                </span>
-                            </button>
+                            <?php
+                            if (isset($_SESSION['user_id'])) { ?>
+                                <button>
+                                    <span class="material-symbols-outlined">
+                                        send
+                                    </span>
+                                </button>
+                            <?php } ?>
                         </div>
                         <input type="hidden" name="forumID" value="<?=$forumID?>">
                     </form>
@@ -210,15 +268,35 @@ global $conn
     <script>
         $('#profile').hover(
             function () {
-                $('#profileDrpDwn').show();
+                $('#profileDrpDwn').fadeIn(200);
+                $('#cartDrpDwn').fadeOut(200);
             }
         )
 
         $('#profileDrpDwn').mouseleave(
             function () {
-                $('#profileDrpDwn').hide();
+                $('#profileDrpDwn').fadeOut(200);
             }
         )
+
+        $('#cart').hover(
+            function () {
+                $('#cartDrpDwn').fadeIn(200);
+                $('#profileDrpDwn').fadeOut(200);
+            }
+        )
+
+        $('#cartDrpDwn').mouseleave(
+            function () {
+                $('#cartDrpDwn').fadeOut(200);
+            }
+        )
+
+        function addOrDecreaseProduct(id, amount) {
+            let product = $('#product' + id);
+            if (product.text() === '0' && amount === -1) return;
+            product.text(parseInt(product.text()) + amount)
+        }
     </script>
 </body>
 </html>
