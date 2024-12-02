@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Saya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl">
+        <h1 class="text-2xl font-bold text-center mb-6">List pesanan</h1>
+        <!--tabel pesanan-->
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-sm">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">#</th>
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Nama Produk</th>
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Jumlah</th>
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Total Harga</th>
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Tanggal Pesan</th>
+                        <th class="py-2 px-4 text-left text-sm font-medium text-gray-700">Aksi</th>
+                    </tr>
+                </thead>
+                <!--aku bingung ngambil pesanan orang lewat mana-->
+            </table>
+        </div>
+        <!--isi kalo pesanan gk ada isinya-->
+        <p id="noOrdersMessage" class="hidden text-center text-gray-500 mt-4">Belum memiliki pesanan.</p>
+        <!--formatting page-->
+        <div class="mt-4 flex justify-center">
+            <button class="bg-gray-300 text-gray-700 py-2 px-4 rounded-l-md hover:bg-gray-400">Sebelumnya</button>
+            <button class="bg-gray-300 text-gray-700 py-2 px-4 hover:bg-gray-400">1</button>
+            <button class="bg-gray-300 text-gray-700 py-2 px-4 hover:bg-gray-400">2</button>
+            <button class="bg-gray-300 text-gray-700 py-2 px-4 rounded-r-md hover:bg-gray-400">Berikutnya</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orders = document.querySelectorAll('tbody tr');
+            const noOrdersMessage = document.getElementById('noOrdersMessage');
+            
+            //kalo gk ada pesanan munculkan ini
+            if (orders.length === 0) {
+                noOrdersMessage.classList.remove('hidden');
+            }else{
+                noOrdersMessage.classList.add('hidden');
+            }
+            // kodingan untuk tombol batal pesanan(gk tau di backendnya atau gk enaknya)
+            // document.querySelectorAll('.bg-red-500').forEach(button => {
+            //     button.addEventListener('click', () => {
+            //         alert('Pesanan berhasil dibatalkan!');
+            //     });
+            // });
+        });
+    </script>
+</body>
+</html>
