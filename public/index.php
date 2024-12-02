@@ -42,7 +42,7 @@ global $conn
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body class="poppins-regular bg-gray-300">
+<body class="poppins-regular bg-slate-300">
     <?php
     if (isset($_SESSION['errors'])) { ?>
         <script>
@@ -71,7 +71,8 @@ global $conn
     }
     ?>
 
-    <div class="grid grid-cols-3 p-2 mb-4 bg-white shadow">
+    <!--  HEADER  -->
+    <div class="grid grid-cols-3 p-2 bg-white shadow">
         <div></div>
         <form action="" class="mb-0">
             <div class="flex items-center w-full border rounded">
@@ -141,6 +142,15 @@ global $conn
             ?>
         </div>
     </div>
+    <div class="flex mb-4 bg-amber-500 shadow">
+        <div class="flex px-2 m-1 ml-8 rounded-2xl bg-white text-amber-500">
+            Forum
+        </div>
+        <a href="allproducts.php" class="flex px-2 m-1 rounded-2xl text-white border-2 border-white">
+            Lihat semua produk
+        </a>
+    </div>
+    <!--  HEADER END  -->
 
     <div class="flex flex-col items-center gap-2">
         <?php
@@ -175,7 +185,7 @@ global $conn
                         <div class='flex flex-col w-[200px] shadow border p-2'>
                             <img class='w-[200px] h-[200px] object-cover object-center' src='<?=$productImage?>' alt='product'>
                             <div class="flex flex-col h-full justify-between">
-                                <div class='overflow-hidden text-ellipsis line-clamp-3 mb-3'> <?=$productName?> </div>
+                                <div class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em]'> <?=$productName?> </div>
                                 <div class="flex justify-between items-center">
                                     <div>Rp<?=$productPrice?></div>
                                     <div class="flex border border-orange-500 rounded h-5/6 mb-2">
@@ -239,12 +249,12 @@ global $conn
                             <div class="w-full flex items-center">
                                 <label for="forumChat<?=$forumID?>"></label>
                                 <?php
-                                    if (isset($_SESSION['user_id'])) { ?>
-                                        <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl ml-2' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
-                                        <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Ngobrol disini">
-                                    <?php } else { ?>
-                                        <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Login terlebih dahulu" disabled>
-                                    <?php }
+                                if (isset($_SESSION['user_id'])) { ?>
+                                    <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl ml-2' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
+                                    <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Ngobrol disini">
+                                <?php } else { ?>
+                                    <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Login terlebih dahulu untuk ikut berdiskusi" disabled>
+                                <?php }
                                 ?>
                             </div>
                             <?php
