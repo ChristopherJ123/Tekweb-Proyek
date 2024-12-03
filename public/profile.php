@@ -125,6 +125,15 @@ global $conn;
 </head>
 <body>
     <div>
+    <?php
+    // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    //     $usernameOrEmail = trim(htmlspecialchars($_POST['usernameOrEmail']));
+    //     $password = htmlspecialchars($_POST['password']);
+    //     $errors = [];
+    
+    // }
+    //     $result = mysqli_query($conn, $query);
+    ?>
         <div class="profile-container">
         <!-- Profile Header -->
         <div class="profile-header">
