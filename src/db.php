@@ -22,5 +22,5 @@ try {
 }
 
 if ($conn) {
-    console_log("You are connected to the database.");
+//    console_log("You are connected to the database.");
 } else console_log("Could not connect to the database.");
