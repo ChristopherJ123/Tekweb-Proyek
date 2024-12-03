@@ -2,7 +2,7 @@
 module.exports = {
     // prefix: 'tw-',
     content: [
-      "./src/**/*.{html,js}",
+      "./src/**/*.{html,php,js}",
       "./public/**/*.{html,php}",
     ],
     theme: {

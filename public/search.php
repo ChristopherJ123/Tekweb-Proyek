@@ -1,7 +1,9 @@
 <?php
 session_start();
 include "../src/db.php";
-global $conn
+global $conn;
+
+$searchTerm = trim(htmlspecialchars($_GET['s']));
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +80,9 @@ global $conn
         $queryProducts = "
                         SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
                         FROM products p 
-                        JOIN users u on u.id = p.author";
+                        JOIN users u on u.id = p.author
+                        WHERE p.name LIKE '%$searchTerm%'
+                        ";
         $result = mysqli_query($conn, $queryProducts);
         foreach ($result as $product) {
             $productID = $product['id'];

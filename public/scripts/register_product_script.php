@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $targetFilePath = $targetDir . $imageName;
 
             if (move_uploaded_file($_FILES['gambar']['tmp_name'], $targetFilePath)) {
-                $image = 'images/' . $imageName;
+                $image = 'https://pasarkakilima.guraa.me' . '/images/' . $imageName;
 
                 //kode untuk memasukkan data ke database
                 $stmt = $conn->prepare("INSERT INTO products (name, description, price, quantity_in_stock, image_link, author) VALUES (?, ?, ?, ?, ?, ?)");
