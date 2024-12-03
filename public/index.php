@@ -166,14 +166,15 @@ global $conn
                             ?>
                         </div>
                     </div>
-                    <form action="" method="POST">
+                    <form action="scripts/forum_chat_script.php" method="POST">
                         <div class="flex justify-between border">
                             <div class="w-full flex items-center">
                                 <label for="forumChat<?=$forumID?>"></label>
                                 <?php
                                 if (isset($_SESSION['user_id'])) { ?>
                                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl ml-2' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
-                                    <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Ngobrol disini">
+                                    <input type="hidden" name="forumID" value="<?=$forumID?>">
+                                    <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Ngobrol disini" required>
                                 <?php } else { ?>
                                     <input type="text" id="forumChat<?=$forumID?>" class="w-full p-2" name="content" placeholder="Login terlebih dahulu untuk ikut berdiskusi" disabled>
                                 <?php }
@@ -181,14 +182,13 @@ global $conn
                             </div>
                             <?php
                             if (isset($_SESSION['user_id'])) { ?>
-                                <button>
+                                <button type="submit">
                                     <span class="material-symbols-outlined">
                                         send
                                     </span>
                                 </button>
                             <?php } ?>
                         </div>
-                        <input type="hidden" name="forumID" value="<?=$forumID?>">
                     </form>
                 </div>
             </div>
