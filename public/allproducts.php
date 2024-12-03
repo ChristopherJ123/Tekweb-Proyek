@@ -70,86 +70,8 @@ global $conn
     }
     ?>
 
-    <!--  HEADER  -->
-    <div class="grid grid-cols-3 p-2 bg-white shadow">
-        <div></div>
-        <form action="" class="mb-0">
-            <div class="flex items-center w-full border rounded">
-                <label for="search"></label>
-                <span class="material-symbols-outlined p-2 text-gray-500">
-                    search
-                </span>
-                <input type="text" id="search" class="w-full h-full p-2" placeholder="Cari di PasarKakiLima">
-            </div>
-        </form>
-        <div class="flex justify-end items-center gap-2 mr-8">
-            <?php
-                if (isset($_SESSION['user_id'])) { ?>
-                    <a href="register_product.php" class="flex text-sm p-2 border border-dashed border-black bg-black text-white hover:bg-white hover:text-black transition">
-                        <span class="material-symbols-outlined text-sm pr-1">
-                            add_circle
-                        </span>
-                        Tambahkan Produk
-                    </a>
-                    <div class="relative">
-                        <div id="cart">
-                            <span class="material-symbols-outlined">
-                                shopping_bag
-                            </span>
-                        </div>
-                        <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow border" style="display: none">
-                            p
-                        </div>
-                    </div>
-                    <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
-                    <div class="relative flex justify-end">
-                        <a id="profile" href="#"><?=$_SESSION['username']?></a>
-                        <div id="profileDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow border" style="display: none">
-                            <div class="flex gap-2">
-                                <span class="material-symbols-outlined">
-                                    account_circle
-                                </span>
-                                <a href="#">Profil saya</a>
-                            </div>
-                            <div class="flex gap-2">
-                                <span class="material-symbols-outlined">
-                                    settings
-                                </span>
-                                <a href="#">Pengaturan</a>
-                            </div>
-                            <div class="flex gap-2">
-                                <span class="material-symbols-outlined">
-                                    logout
-                                </span>
-                                <a href="logout.php">Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php } else { ?>
-                    <a href="login.php" class="p-2 border rounded">
-                        Masuk
-                    </a>
-                    <a href="register.php" class="p-2 border rounded">
-                        Daftar
-                    </a>
-                    <button>
-                        <span class="material-symbols-outlined">
-                            account_circle
-                        </span>
-                    </button>
-                <?php }
-            ?>
-        </div>
-    </div>
-    <div class="flex mb-4 bg-amber-500 shadow">
-        <a href="index.php" class="flex px-2 m-1 ml-8 rounded-2xl text-white border-2 border-white">
-            Forum
-        </a>
-        <div class="flex px-2 m-1 rounded-2xl bg-white text-amber-500">
-            Lihat semua produk
-        </div>
-    </div>
-    <!--  HEADER END  -->
+    <!--  Top Nav Bar  -->
+    <?php include '../src/topnavbar.php'?>
 
     <div class="flex flex-wrap gap-2 m-4">
         <?php
@@ -166,24 +88,24 @@ global $conn
             $authorName = $product['username'];
             $authorPP = $product['profile_picture']
             ?>
-            <div class='flex flex-col w-[200px] shadow border p-2 bg-white'>
-                <img class='w-[200px] h-[200px] object-cover object-center' src='<?=$productImage?>' alt='product'>
+            <div class='flex flex-col w-[200px] shadow border p-2 bg-white hover:scale-[1.01] transition'>
+                <img onclick="location.href='product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>'" class='w-[200px] h-[200px] object-cover object-center' src='<?= !empty($productImage) ? $productImage : 'https://cdn.dribbble.com/users/3512533/screenshots/14168376/web_1280___8_4x.jpg'?>' alt='product'>
                 <div class="flex flex-col h-full justify-between">
-                    <div class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em]'> <?=$productName?> </div>
+                    <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em]'> <?=$productName?> </a>
                     <div class="flex items-center gap-2">
                         <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
-                        <a href="#" class="text-ellipsis overflow-hidden"><?=$authorName?></a>
+                        <a href="profile.php?p=<?=urlencode($authorName)?>" class="text-ellipsis overflow-hidden"><?=$authorName?></a>
                     </div>
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center mb-2">
                         <div>Rp<?=$productPrice?></div>
-                        <div class="flex border border-orange-500 rounded h-5/6 mb-2">
-                            <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="border-e border-orange-500 text-white bg-orange-500 px-1">
+                        <div class="flex items-center h-5/6">
+                            <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
                                     remove
                                 </span>
                             </button>
-                            <div id="product<?=$productID?>" class="px-1.5 text-orange-500 text-sm">0</div>
-                            <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" id="decreaseProduct<?=$productID?>" class="border-s border-orange-500 text-white bg-orange-500 px-1">
+                            <div id="product<?=$productID?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
+                            <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
                                     add
                                 </span>
@@ -199,7 +121,6 @@ global $conn
                         </span>
                     </button>
                 </div>
-
             </div>
         <?php }
         ?>
