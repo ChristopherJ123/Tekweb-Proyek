@@ -3,14 +3,34 @@ global $conn;
 ?>
 <!--  HEADER  -->
 <div class="grid grid-cols-3 p-2 bg-white shadow">
-    <div></div>
-    <form action="" class="mb-0">
+    <div class="ml-6">
+        <svg id="Layer_1" height="48px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 110 280">
+            <defs>
+                <style>
+                    .cls-1 {
+                        fill: none;
+                        stroke: #000;
+                        stroke-miterlimit: 10;
+                        stroke-width: 10px;
+                    }
+                    .cls-2 {
+                        fill: #231f20;
+                    }
+                </style>
+            </defs>
+            <path class="cls-1" d="M86.58,71.62A67.91,67.91,0,0,1,5.25,138.14,3.16,3.16,0,0,1,2.71,135V8.21a3.16,3.16,0,0,1,2.54-3.1A67.86,67.86,0,0,1,86.58,71.62Z" transform="translate(-0.7 -1.76)"/>
+            <line class="cls-1" x1="18.77" y1="192.04" x2="64.78" y2="119.04"/>
+            <path class="cls-1" d="M2.7,175.8l82.72,83.87a.69.69,0,0,1-.49,1.18h-81a1.22,1.22,0,0,1-1.22-1.22V7.79" transform="translate(-0.7 -1.76)"/>
+            <circle class="cls-2" cx="40.68" cy="32.12" r="4.96"/>
+        </svg>
+    </div>
+    <form action="../public/search.php" method="get" class="mb-0">
         <div class="flex items-center w-full border rounded">
             <label for="search"></label>
             <span class="material-symbols-outlined p-2 text-gray-500">
                 search
             </span>
-            <input type="text" id="search" class="w-full h-full p-2" placeholder="Cari di PasarKakiLima">
+            <input type="search" id="search" name="s" class="w-full h-full p-2" placeholder="Cari di PasarKakiLima">
         </div>
     </form>
     <div class="flex justify-end items-center gap-2 mr-8">
@@ -46,8 +66,14 @@ global $conn;
                                 <div class="line-clamp-2 w-64"><?=$cartItem['name']?></div>
                                 <div><?=$cartItem['quantity']?>x<?=$cartItem['price']?></div>
                             </div>
-                        <?php }
-                    }
+                        <?php } ?>
+                        <div class="flex justify-end">
+                            Subtotal: <?=$_SESSION['cart_total_price']?>
+                        </div>
+                        <a href="#" class="flex justify-center p-2 bg-amber-500 rounded-3xl text-white border border-amber-500 transition duration-75 hover:bg-white hover:text-amber-500">
+                            Checkout
+                        </a>
+                    <?php }
                     ?>
                 </div>
             </div>
