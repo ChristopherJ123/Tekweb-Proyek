@@ -3,7 +3,6 @@ session_start();
 include "../src/db.php";
 global $conn;
 ?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -126,18 +125,53 @@ global $conn;
 </head>
 <body>
     <div>
-        <?php
-        if (isset($_SESSION['cart'])) {
-            foreach ($_SESSION['cart'] as $productID => $amount) {
-                $queryProduct = "SELECT name, image_link, price FROM products WHERE id = '$productID'";
-                $product = mysqli_fetch_assoc(mysqli_query($conn, $queryProduct)); ?>
-                <div><?=$product['name']?> <?=$product['image_link']?> <?=$product['price']?> <?=$amount?></div>
-            <?php }
-        } else { ?>
-            <!-- <div>Cart kosong</div> -->
-        <?php }
-        ?>
-        
+        <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <img src="https://via.placeholder.com/100" alt="Profile Picture">
+            <h1>Username</h1>
+            <p>This is the user bio. bisa diedit.</p>
+            <button class="edit-btn">Edit Profile Picture</button>
+        </div>
+
+        <!-- Profile Body -->
+        <div class="profile-body">
+            <!-- Contact Information -->
+            <div class="profile-section">
+                <h2>Contact Information</h2>
+                <p>Phone Number: +62 123 456 789</p>
+                <button class="edit-btn">Edit Phone Number</button>
+            </div>
+
+            <!-- Products Section -->
+            <div class="profile-section">
+                <h2>Products Posted</h2>
+                <div class="product-list">
+                    <div class="product-item">
+                        <img src="https://via.placeholder.com/150" alt="Product Image">
+                        <h3>Product Name 1</h3>
+                        <p>Price: Rp50,000</p>
+                    </div>
+                    <div class="product-item">
+                        <img src="https://via.placeholder.com/150" alt="Product Image">
+                        <h3>Product Name 2</h3>
+                        <p>Price: Rp30,000</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Section (Only for Owner) -->
+            <div class="profile-section">
+                <h2>Edit Profile</h2>
+                <div class="edit-section">
+                    <input type="text" placeholder="Edit Username">
+                    <textarea placeholder="Edit Bio"></textarea>
+                    <input type="text" placeholder="Edit Phone Number">
+                    <button>Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </body>
 </html>
