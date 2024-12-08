@@ -52,29 +52,38 @@ global $conn;
                 Tambahkan Produk
             </a>
             <div class="relative">
-                <div id="cart">
+                <div id="cart" class="relative">
                     <span class="material-symbols-outlined">
                         shopping_bag
                     </span>
+                    <span id="cartItemsCount" class="absolute left-0 bottom-0 text-xs px-1 bg-red-500 text-white font-bold rounded-full <?=!isset($_SESSION['cart']) ? 'hidden' : ''?>">
+                        <?=isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0?>
+                    </span>
                 </div>
-                <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-10 right-1/2 transform <?=isset($_SESSION['cart']) ? 'translate-x-1/4' : 'translate-x-1/2'?> rounded bg-white shadow border" style="display: none">
-                    <?php
-                    if (isset($_SESSION['cart'])) {
-                        foreach ($cartItems as $cartItem) { ?>
-                            <div class="flex p-2 border text-sm gap-2">
-                                <img class='w-[40px] h-[40px] object-cover object-center' src='<?=$cartItem['image_link']?>' alt='product'>
-                                <div class="line-clamp-2 w-64"><?=$cartItem['name']?></div>
-                                <div><?=$cartItem['quantity']?>x<?=$cartItem['price']?></div>
-                            </div>
-                        <?php } ?>
+                <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-10 right-1/2 min-w-[400px] transform <?=isset($_SESSION['cart']) ? 'translate-x-1/4' : 'translate-x-1/2'?> rounded bg-white shadow border" style="display: none">
+                    <div id="cartItems" class="grid grid-cols-1 border divide-y <?= !isset($_SESSION['cart']) ? 'hidden' : ''?>">
+                        <?php
+                        if (isset($_SESSION['cart'])) {
+                            foreach ($cartItems as $cartItem) { ?>
+                                <div class="flex p-2 text-sm gap-2">
+                                    <img class='w-[40px] h-[40px] object-cover object-center' src='<?=$cartItem['image_link']?>' alt='product'>
+                                    <div class="line-clamp-2 w-64"><?=$cartItem['name']?></div>
+                                    <div><?=$cartItem['quantity']?>x<?=$cartItem['price']?></div>
+                                </div>
+                            <?php }
+                        } ?>
+                    </div>
+                    <?php if (!isset($_SESSION['cart'])) { ?>
+                        <div id="emptyCartLabel">Tambahkan barang ke keranjangmu!</div>
+                    <?php } ?>
+                    <div id="checkoutNav" <?= !isset($_SESSION['cart']) ? 'class="hidden"' : ""?>>
                         <div class="flex justify-end">
-                            Subtotal: <?=$_SESSION['cart_total_price']?>
+                            Subtotal: <span id="cartSubtotal"> <?= $_SESSION['cartSubtotal'] ?? 0 ?> </span>
                         </div>
-                        <a href="#" class="flex justify-center p-2 bg-amber-500 rounded-3xl text-white border border-amber-500 transition duration-75 hover:bg-white hover:text-amber-500">
-                            Checkout
+                        <a href="../public/checkout.php" class="flex justify-center p-2 bg-amber-500 rounded-3xl text-white border border-amber-500 transition duration-75 hover:bg-white hover:text-amber-500">
+                            Lihat keranjang
                         </a>
-                    <?php }
-                    ?>
+                    </div>
                 </div>
             </div>
             <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
@@ -102,32 +111,39 @@ global $conn;
                 </div>
             </div>
         <?php } else { ?>
-            <div class="relative">
-                <div id="cart">
+                <div class="relative">
+                <div id="cart" class="relative">
                     <span class="material-symbols-outlined">
                         shopping_bag
                     </span>
+                    <span id="cartItemsCount" class="absolute left-0 bottom-0 text-xs px-1 bg-red-500 text-white font-bold rounded-full <?=!isset($_SESSION['cart']) ? 'hidden' : ''?>">
+                        <?=isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0?>
+                    </span>
                 </div>
-                <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-10 right-1/2 transform <?=isset($_SESSION['cart']) ? 'translate-x-1/4' : 'translate-x-1/2'?> rounded bg-white shadow border" style="display: none">
-                    <?php
-                    if (isset($_SESSION['cart'])) {
-                        foreach ($cartItems as $cartItem) { ?>
-                            <div class="flex p-2 border text-sm gap-2">
-                                <img class='w-[40px] h-[40px] object-cover object-center' src='<?=$cartItem['image_link']?>' alt='product'>
-                                <div class="line-clamp-2 w-64"><?=$cartItem['name']?></div>
-                                <div><?=$cartItem['quantity']?>x<?=$cartItem['price']?></div>
-                            </div>
-                        <?php } ?>
+                <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-10 right-1/2 min-w-[400px] transform <?=isset($_SESSION['cart']) ? 'translate-x-1/4' : 'translate-x-1/2'?> rounded bg-white shadow border" style="display: none">
+                    <div id="cartItems" class="grid grid-cols-1 border divide-y <?= !isset($_SESSION['cart']) ? 'hidden' : ''?>">
+                        <?php
+                        if (isset($_SESSION['cart'])) {
+                            foreach ($cartItems as $cartItem) { ?>
+                                <div class="flex p-2 text-sm gap-2">
+                                    <img class='w-[40px] h-[40px] object-cover object-center' src='<?=$cartItem['image_link']?>' alt='product'>
+                                    <div class="line-clamp-2 w-64"><?=$cartItem['name']?></div>
+                                    <div><?=$cartItem['quantity']?>x<?=$cartItem['price']?></div>
+                                </div>
+                            <?php }
+                        } ?>
+                    </div>
+                    <?php if (!isset($_SESSION['cart'])) { ?>
+                        <div id="emptyCartLabel">Tambahkan barang ke keranjangmu!</div>
+                    <?php } ?>
+                    <div id="checkoutNav" <?= !isset($_SESSION['cart']) ? 'class="hidden"' : ""?>>
                         <div class="flex justify-end">
-                            Subtotal price: <?=$_SESSION['cart_total_price']?>
+                            Subtotal: <span id="cartSubtotal"> <?= $_SESSION['cartSubtotal'] ?? 0 ?> </span>
                         </div>
-                        <a href="#" class="flex justify-center p-2 bg-amber-500 rounded-3xl text-white border border-amber-500 hover:text-amber-500 hover:bg-white transition">
-                            Checkout
+                        <a href="../public/checkout.php" class="flex justify-center p-2 bg-amber-500 rounded-3xl text-white border border-amber-500 transition duration-75 hover:bg-white hover:text-amber-500">
+                            Lihat keranjang
                         </a>
-                    <?php } else { ?>
-                        <div>Tambahkan barang ke keranjangmu!</div>
-                    <?php }
-                    ?>
+                    </div>
                 </div>
             </div>
             <a href="login.php" class="p-2 border rounded">
@@ -173,3 +189,76 @@ global $conn;
     ?>
 </div>
 <!--  HEADER END  -->
+<!-- SCRIPTS -->
+<script>
+    $('#profile').hover(
+        function () {
+            $('#profileDrpDwn').fadeIn(200);
+            $('#cartDrpDwn').fadeOut(200);
+        }
+    )
+
+    $('#profileDrpDwn').mouseleave(
+        function () {
+            $('#profileDrpDwn').fadeOut(200);
+        }
+    )
+
+    $('#cart').hover(
+        function () {
+            $('#cartDrpDwn').fadeIn(200);
+            $('#profileDrpDwn').fadeOut(200);
+        }
+    )
+
+    $('#cartDrpDwn').mouseleave(
+        function () {
+            $('#cartDrpDwn').fadeOut(200);
+        }
+    )
+
+    function addOrDecreaseProduct(id, amount) {
+        let product = $('#product' + id);
+        if (product.text() === '0' && amount === -1) return;
+        product.text(parseInt(product.text()) + amount)
+    }
+
+    function addToCart(id) {
+        let xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState === 4) {
+                setTimeout(() => {
+                    if (this.status === 200) {
+                        // console.log(this.responseText) // DEBUG
+                        let response = JSON.parse(this.responseText);
+                        if (response.success) {
+                            $('#emptyCartLabel').hide();
+                            $('#cartItems').empty().show();
+                            let cartItems = response.cart;
+                            cartItems.forEach(item => {
+                                const cartItemDiv = document.createElement('div');
+                                cartItemDiv.classList.add('flex', 'p-2', 'text-sm', 'gap-2');
+                                cartItemDiv.innerHTML = `
+                                        <img class='w-[40px] h-[40px] object-cover object-center' src='${item.image_link}' alt='product'>
+                                        <div class="line-clamp-2 w-64">${item.name}</div>
+                                        <div>${item.quantity}x${item.price}</div>
+                                    `;
+                                $('#cartItems').append(cartItemDiv)
+                            })
+                            $('#cartItemsCount').show().text(response.itemsCount);
+                            $('#cartSubtotal').text(response.subtotal);
+                            $('#checkoutNav').show();
+                        } else {
+                            Swal.fire('Error', response.message, 'error');
+                        }
+                    } else {
+                        Swal.fire('Error', 'Terjadi kesalahan pada server. Silahkan coba lagi.', 'error')
+                    }
+                }, 100)
+            }
+        };
+        xmlhttp.open('POST', 'scripts/add_to_cart_script.php')
+        xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xmlhttp.send('product_id=' + id + '&amount=' + $('#product' + id).text())
+    }
+</script>

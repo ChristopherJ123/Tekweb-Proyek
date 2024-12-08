@@ -70,7 +70,7 @@ global $conn
     }
     ?>
 
-    <!--  Top Nav Bar  -->
+    <!--  Top Nav Bar & Scripts  -->
     <?php include '../src/topnavbar.php'?>
 
     <div class="flex flex-wrap gap-2 m-4">
@@ -112,7 +112,7 @@ global $conn
                             </button>
                         </div>
                     </div>
-                    <button class="flex text-sm p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                    <button onclick="addToCart(<?=$productID?>)" class="flex text-sm p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
                         <span class="material-symbols-outlined text-sm">
                             add
                         </span>
@@ -125,40 +125,5 @@ global $conn
         <?php }
         ?>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        $('#profile').hover(
-            function () {
-                $('#profileDrpDwn').fadeIn(200);
-                $('#cartDrpDwn').fadeOut(200);
-            }
-        )
-
-        $('#profileDrpDwn').mouseleave(
-            function () {
-                $('#profileDrpDwn').fadeOut(200);
-            }
-        )
-
-        $('#cart').hover(
-            function () {
-                $('#cartDrpDwn').fadeIn(200);
-                $('#profileDrpDwn').fadeOut(200);
-            }
-        )
-
-        $('#cartDrpDwn').mouseleave(
-            function () {
-                $('#cartDrpDwn').fadeOut(200);
-            }
-        )
-
-        function addOrDecreaseProduct(id, amount) {
-            let product = $('#product' + id);
-            if (product.text() === '0' && amount === -1) return;
-            product.text(parseInt(product.text()) + amount)
-        }
-    </script>
 </body>
 </html>

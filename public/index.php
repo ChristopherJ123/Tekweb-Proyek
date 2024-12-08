@@ -71,7 +71,7 @@ global $conn
     }
     ?>
 
-    <!--  Top Nav Bar  -->
+    <!--  Top Nav Bar & Scripts  -->
     <?php include '../src/topnavbar.php'?>
 
     <div class="flex flex-col items-center gap-2">
@@ -196,73 +196,5 @@ global $conn
         }
         ?>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        $('#profile').hover(
-            function () {
-                $('#profileDrpDwn').fadeIn(200);
-                $('#cartDrpDwn').fadeOut(200);
-            }
-        )
-
-        $('#profileDrpDwn').mouseleave(
-            function () {
-                $('#profileDrpDwn').fadeOut(200);
-            }
-        )
-
-        $('#cart').hover(
-            function () {
-                $('#cartDrpDwn').fadeIn(200);
-                $('#profileDrpDwn').fadeOut(200);
-            }
-        )
-
-        $('#cartDrpDwn').mouseleave(
-            function () {
-                $('#cartDrpDwn').fadeOut(200);
-            }
-        )
-
-        function addOrDecreaseProduct(id, amount) {
-            let product = $('#product' + id);
-            if (product.text() === '0' && amount === -1) return;
-            product.text(parseInt(product.text()) + amount)
-        }
-
-        function addToCart(id) {
-            let xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState === 4) {
-                    setTimeout(() => {
-                        if (this.status === 200) {
-                            let response = JSON.parse(this.responseText);
-                            if (response.success) {
-                                $('#cartDrpDwn').empty();
-                                let cartItems = response.cart;
-                                cartItems.forEach(item => {
-                                    const cartItemDiv = document.createElement('div');
-                                    cartItemDiv.classList.add('flex', 'p-2', 'border', 'text-sm', 'gap-2');
-                                    cartItemDiv.innerHTML = `
-                                        <img class='w-[40px] h-[40px] object-cover object-center' src='${item.image_link}' alt='product'>
-                                        <div class="line-clamp-2 w-64">${item.name}</div>
-                                        <div>${item.quantity}x${item.price}</div>
-                                    `;
-                                    $('#cartDrpDwn').append(cartItemDiv)
-                                })
-                            } else {
-                                Swal.fire('Error', response.message, 'error');
-                            }
-                        } else {
-                            Swal.fire('Error', 'Terjadi kesalahan pada server. Silahkan coba lagi.', 'error')
-                        }
-                    }, 100)
-                }
-            };
-            xmlhttp.open('POST', 'scripts/add_to_cart_script.php')
-            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xmlhttp.send('product_id=' + id + '&amount=' + $('#product' + id).text())
-        }
-    </script>
 </body>
 </html>
