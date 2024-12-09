@@ -8,6 +8,7 @@ global $conn
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
     <link rel="stylesheet" href="styles.css">
 
@@ -28,7 +29,7 @@ global $conn
                     'wght' 400,
                     'GRAD' 0,
                     'opsz' 24
-         }
+        }
         .material-symbols-outlined.text-sm {
             font-size: 0.875rem;
             line-height: 1.25rem;
@@ -94,9 +95,9 @@ global $conn
             <div class='flex flex-col gap-2 bg-white p-2 rounded-lg shadow'>
                 <div class='flex items-center gap-2'>
                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
-                    <a href='#'><?=$authorName?></a>
+                    <a href='#' class="text-sm sm:text-base"><?=$authorName?></a>
                 </div>
-                <div class='grid grid-cols-3 gap-2'>
+                <div class='grid grid-cols-2 sm:grid-cols-3 gap-2 justify-items-center'>
                     <?php
                     foreach ($products as $product) {
                         $productID = $product['id'];
@@ -104,12 +105,12 @@ global $conn
                         $productName = $product['name'];
                         $productPrice = number_format($product['price'], 0, ',', '.');
                         ?>
-                        <div class='flex flex-col w-[200px] shadow border p-2 bg-white hover:scale-[1.01] transition'>
+                        <div class='flex flex-col w-fit sm:w-[200px] shadow border p-2 bg-white hover:scale-[1.01] transition'>
                             <img onclick="location.href='product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>'" class='w-[200px] h-[200px] object-cover object-center' src='<?=$productImage?>' alt='product'>
                             <div class="flex flex-col h-full justify-between">
-                                <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em]'> <?=$productName?> </a>
+                                <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em] text-sm sm:text-base'> <?=$productName?> </a>
                                 <div class="flex justify-between items-center mb-2">
-                                    <div>Rp<?=$productPrice?></div>
+                                    <div class="text-sm sm:text-base">Rp<?=$productPrice?></div>
                                     <div class="flex items-center h-5/6">
                                         <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
                                             <span class="material-symbols-outlined text-sm">
@@ -124,7 +125,7 @@ global $conn
                                         </button>
                                     </div>
                                 </div>
-                                <button onclick="addToCart(<?=$productID?>)" class="flex text-sm p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                                <button onclick="addToCart(<?=$productID?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
                                     <span class="material-symbols-outlined text-sm">
                                         add
                                     </span>
@@ -141,7 +142,7 @@ global $conn
                 </div>
                 <div class="flex flex-col gap-2 border p-2 shadow">
                     <div>
-                        <p class="mb-2">Diskusi:</p>
+                        <p class="mb-2 text-sm sm:text-base">Diskusi:</p>
                         <div class="flex flex-col gap-1">
                             <?php
                             $queryForumChats = "
@@ -156,8 +157,8 @@ global $conn
                                 ?>
                                 <div class='flex items-center gap-2'>
                                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$forumChatPP?>' alt='pp'>
-                                    <a href="#"><?=$forumChatUsername?></a>
-                                    <div>
+                                    <a href="#" class="text-sm sm:text-base w-16 sm:w-min overflow-hidden text-ellipsis"><?=$forumChatUsername?></a>
+                                    <div class="text-sm sm:text-base">
                                         <?=$forumChatContent?>
                                     </div>
                                 </div>

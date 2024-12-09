@@ -2,7 +2,7 @@
 global $conn;
 ?>
 <!--  HEADER  -->
-<div class="grid grid-cols-3 p-2 bg-white shadow">
+<div class="grid grid-cols-[1fr_3fr_1fr] sm:grid-cols-[1fr_2fr_1fr] md:grid-cols-3 p-2 bg-white shadow">
     <div class="ml-6">
         <svg id="Layer_1" height="48px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 110 280">
             <defs>
@@ -24,7 +24,7 @@ global $conn;
             <circle class="cls-2" cx="40.68" cy="32.12" r="4.96"/>
         </svg>
     </div>
-    <form action="../public/search.php" method="get" class="mb-0">
+    <form action="../public/allproducts.php" method="get" class="mb-0">
         <div class="flex items-center w-full border rounded">
             <label for="search"></label>
             <span class="material-symbols-outlined p-2 text-gray-500">
@@ -146,17 +146,32 @@ global $conn;
                     </div>
                 </div>
             </div>
-            <a href="login.php" class="p-2 border rounded">
+            <a href="login.php" class="p-2 border rounded hidden md:flex">
                 Masuk
             </a>
-            <a href="register.php" class="p-2 border rounded">
+            <a href="register.php" class="p-2 border rounded hidden md:flex">
                 Daftar
             </a>
-            <button>
-                    <span class="material-symbols-outlined">
-                        account_circle
-                    </span>
-            </button>
+            <div class="relative">
+                <span class="material-symbols-outlined">
+                    account_circle
+                </span>
+                <span id="signInNavHover" class="absolute left-0 w-6 h-6 cursor-pointer md:hidden"></span>
+                <div id="signInDrpDown" class="absolute right-0 flex flex-col bg-white shadow gap-2 p-4 rounded" style="display: none">
+                    <a href="login.php" class="flex">
+                        <span class="material-symbols-outlined">
+                            account_circle
+                        </span>
+                        Masuk
+                    </a>
+                    <a href="register.php" class="flex">
+                        <span class="material-symbols-outlined">
+                            login
+                        </span>
+                        Daftar
+                    </a>
+                </div>
+            </div>
         <?php }
         ?>
     </div>
@@ -193,27 +208,41 @@ global $conn;
 <script>
     $('#profile').hover(
         function () {
-            $('#profileDrpDwn').fadeIn(200);
-            $('#cartDrpDwn').fadeOut(200);
+            $('#profileDrpDwn').fadeIn(100);
+            $('#cartDrpDwn').fadeOut(100);
         }
     )
 
     $('#profileDrpDwn').mouseleave(
         function () {
-            $('#profileDrpDwn').fadeOut(200);
+            $('#profileDrpDwn').fadeOut(100);
         }
     )
 
     $('#cart').hover(
         function () {
-            $('#cartDrpDwn').fadeIn(200);
-            $('#profileDrpDwn').fadeOut(200);
+            $('#cartDrpDwn').fadeIn(100);
+            $('#profileDrpDwn').fadeOut(100);
+            $('#signInDrpDown').fadeOut(100);
         }
     )
 
     $('#cartDrpDwn').mouseleave(
         function () {
-            $('#cartDrpDwn').fadeOut(200);
+            $('#cartDrpDwn').fadeOut(100);
+        }
+    )
+
+    $('#signInNavHover').hover(
+        function () {
+            $('#signInDrpDown').fadeIn(100);
+            $('#cartDrpDwn').fadeOut(100);
+        }
+    )
+
+    $('#signInDrpDown').mouseleave(
+        function () {
+            $('#signInDrpDown').fadeOut(100);
         }
     )
 

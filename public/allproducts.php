@@ -1,13 +1,19 @@
 <?php
 session_start();
 include "../src/db.php";
-global $conn
+global $conn;
+
+if (isset($_GET['s'])) {
+    $searchTerm = trim(htmlspecialchars($_GET['s']));
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Title</title>
     <link rel="stylesheet" href="styles.css">
 
@@ -73,12 +79,24 @@ global $conn
     <!--  Top Nav Bar & Scripts  -->
     <?php include '../src/topnavbar.php'?>
 
-    <div class="flex flex-wrap gap-2 m-4">
+    <div class="grid grid-cols-2 sm:flex flex-wrap gap-2 m-4 justify-center">
         <?php
-        $queryProducts = "
+        if (isset($searchTerm)) {
+            $queryProducts = "
                         SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
                         FROM products p 
-                        JOIN users u on u.id = p.author";
+                        JOIN users u on u.id = p.author
+                        WHERE p.name LIKE '%$searchTerm%'
+                        ORDER BY p.created_at DESC 
+                        ";
+        } else {
+            $queryProducts = "
+                        SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
+                        FROM products p 
+                        JOIN users u on u.id = p.author
+                        ORDER BY p.created_at DESC 
+                        ";
+        }
         $result = mysqli_query($conn, $queryProducts);
         foreach ($result as $product) {
             $productID = $product['id'];
@@ -88,16 +106,16 @@ global $conn
             $authorName = $product['username'];
             $authorPP = $product['profile_picture']
             ?>
-            <div class='flex flex-col w-[200px] shadow border p-2 bg-white hover:scale-[1.01] transition'>
+            <div class='flex flex-col sm:w-[200px] shadow border p-2 bg-white hover:scale-[1.01] transition'>
                 <img onclick="location.href='product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>'" class='w-[200px] h-[200px] object-cover object-center' src='<?= !empty($productImage) ? $productImage : 'https://cdn.dribbble.com/users/3512533/screenshots/14168376/web_1280___8_4x.jpg'?>' alt='product'>
                 <div class="flex flex-col h-full justify-between">
-                    <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em]'> <?=$productName?> </a>
+                    <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em] text-sm sm:text-base'> <?=$productName?> </a>
                     <div class="flex items-center gap-2">
                         <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
-                        <a href="profile.php?p=<?=urlencode($authorName)?>" class="text-ellipsis overflow-hidden"><?=$authorName?></a>
+                        <a href="profile.php?p=<?=urlencode($authorName)?>" class="text-ellipsis overflow-hidden text-sm sm:text-base"><?=$authorName?></a>
                     </div>
                     <div class="flex justify-between items-center mb-2">
-                        <div>Rp<?=$productPrice?></div>
+                        <div class="text-sm sm:text-base">Rp<?=$productPrice?></div>
                         <div class="flex items-center h-5/6">
                             <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
@@ -112,7 +130,7 @@ global $conn
                             </button>
                         </div>
                     </div>
-                    <button onclick="addToCart(<?=$productID?>)" class="flex text-sm p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                    <button onclick="addToCart(<?=$productID?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
                         <span class="material-symbols-outlined text-sm">
                             add
                         </span>
