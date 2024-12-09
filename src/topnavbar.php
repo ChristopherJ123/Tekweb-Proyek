@@ -2,8 +2,8 @@
 global $conn;
 ?>
 <!--  HEADER  -->
-<div class="grid grid-cols-[1fr_3fr_1fr] sm:grid-cols-[1fr_2fr_1fr] md:grid-cols-3 p-2 bg-white shadow">
-    <div class="ml-6">
+<div class="grid grid-cols-[1fr_3fr_1fr] sm:grid-cols-[1fr_2fr_1fr] lg:grid-cols-3 p-2 bg-white shadow">
+    <div class="sm:ml-6">
         <svg id="Layer_1" height="48px" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="-10 -10 110 280">
             <defs>
                 <style>
@@ -45,14 +45,14 @@ global $conn;
             }
         }
         if (isset($_SESSION['user_id'])) { ?>
-            <a href="register_product.php" class="flex text-sm p-2 border border-dashed border-black bg-black text-white hover:bg-white hover:text-black transition">
+            <a href="register_product.php" class="hidden lg:flex text-sm p-2 border border-dashed border-black bg-black text-white hover:bg-white hover:text-black transition">
                 <span class="material-symbols-outlined text-sm pr-1">
                     add_circle
                 </span>
                 Tambahkan Produk
             </a>
             <div class="relative">
-                <div id="cart" class="relative">
+                <div id="cart" class="relative cursor-pointer">
                     <span class="material-symbols-outlined">
                         shopping_bag
                     </span>
@@ -60,7 +60,7 @@ global $conn;
                         <?=isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0?>
                     </span>
                 </div>
-                <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-10 right-1/2 min-w-[400px] transform <?=isset($_SESSION['cart']) ? 'translate-x-1/4' : 'translate-x-1/2'?> rounded bg-white shadow border" style="display: none">
+                <div id="cartDrpDwn" class="absolute flex flex-col gap-2 p-4 top-10 right-1/2 min-w-[200px] sm:min-w-[400px] transform translate-x-1/2 <?=isset($_SESSION['cart']) ? 'sm:translate-x-1/4' : 'translate-x-1/2'?> rounded bg-white shadow border" style="display: none">
                     <div id="cartItems" class="grid grid-cols-1 border divide-y <?= !isset($_SESSION['cart']) ? 'hidden' : ''?>">
                         <?php
                         if (isset($_SESSION['cart'])) {
@@ -90,6 +90,12 @@ global $conn;
             <div class="relative flex justify-end">
                 <a id="profile" href="#"><?=$_SESSION['username']?></a>
                 <div id="profileDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow border" style="display: none">
+                    <div class="flex lg:hidden gap-2">
+                        <span class="material-symbols-outlined">
+                            add_circle
+                        </span>
+                        <a href="../public/register_product.php">Tambahkan produk</a>
+                    </div>
                     <div class="flex gap-2">
                         <span class="material-symbols-outlined">
                             account_circle
@@ -206,9 +212,14 @@ global $conn;
 <!--  HEADER END  -->
 <!-- SCRIPTS -->
 <script>
-    $('#profile').hover(
+    $('#profile').mouseenter(
         function () {
             $('#profileDrpDwn').fadeIn(100);
+            $('#cartDrpDwn').fadeOut(100);
+        }
+    ).click(
+        function () {
+            $('#profileDrpDwn').fadeToggle(100);
             $('#cartDrpDwn').fadeOut(100);
         }
     )
@@ -219,9 +230,15 @@ global $conn;
         }
     )
 
-    $('#cart').hover(
+    $('#cart').mouseenter(
         function () {
             $('#cartDrpDwn').fadeIn(100);
+            $('#profileDrpDwn').fadeOut(100);
+            $('#signInDrpDown').fadeOut(100);
+        }
+    ).click(
+        function () {
+            $('#cartDrpDwn').fadeToggle(100);
             $('#profileDrpDwn').fadeOut(100);
             $('#signInDrpDown').fadeOut(100);
         }
