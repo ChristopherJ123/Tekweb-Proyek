@@ -45,12 +45,29 @@ global $conn;
             }
         }
         if (isset($_SESSION['user_id'])) { ?>
-            <a href="register_product.php" class="hidden lg:flex text-sm p-2 border border-dashed border-black bg-black text-white hover:bg-white hover:text-black transition">
-                <span class="material-symbols-outlined text-sm pr-1">
-                    add_circle
-                </span>
-                Tambahkan Produk
-            </a>
+            <div class="relative">
+                <button class="hidden lg:flex p-2">
+                    <span class="material-symbols-outlined pr-1">
+                        add_box
+                    </span>
+                </button>
+                    <div class="absolute p-2 bg-white rounded translate-x-1/2 right-0">
+                    <a href="../public/register_product.php" class="hidden lg:flex p-2">
+                        <span class="material-symbols-outlined pr-1">
+                            add_circle
+                        </span>
+                        Tambahkan Produk
+                    </a>
+                    <a href="../public/register_forum.php" class="hidden lg:flex p-2">
+                        <span class="material-symbols-outlined pr-1">
+                            forum
+                        </span>
+                        Buat forum
+                    </a>
+                </div>
+
+            </div>
+
             <div class="relative">
                 <div id="cart" class="relative cursor-pointer">
                     <span class="material-symbols-outlined">
@@ -186,10 +203,10 @@ global $conn;
     <?php
     $currentPage = basename($_SERVER['SCRIPT_NAME']);
     if ($currentPage == "index.php") { ?>
-        <div class="flex px-2 m-1 ml-8 rounded-2xl bg-white text-amber-500">
+        <div class="flex px-2 m-1 ml-8 rounded-2xl bg-white text-amber-500 text-sm sm:text-base">
             Forum
         </div>
-        <a href="allproducts.php" class="flex px-2 m-1 rounded-2xl text-white border-2 border-white">
+        <a href="allproducts.php" class="flex px-2 m-1 rounded-2xl text-white border-2 border-white text-sm sm:text-base">
             Lihat semua produk
         </a>
     <?php } else if ($currentPage == "allproducts.php") { ?>
