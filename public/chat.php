@@ -118,7 +118,7 @@ session_start();
             <div class="chat-profile-stacks">
                 <div class="chat-profile-stack">
                     <a class="profile-circle">
-                        <img src="../assets/Bootstrap-person-fill-icon.png" alt="">
+                        <img src="assets/Bootstrap-person-fill-icon.png" alt="">
                     </a>
                     <span class="d-flex flex-column">
                         <small class="fs-5">John Doe</small>
@@ -127,7 +127,7 @@ session_start();
                 </div>
                 <div class="chat-profile-stack">
                     <a class="profile-circle">
-                        <img src="../assets/Bootstrap-person-fill-icon.png" alt="">
+                        <img src="assets/Bootstrap-person-fill-icon.png" alt="">
                     </a>
                     <span class="d-flex flex-column">
                         <small class="fs-5">John Doe</small>
@@ -136,7 +136,7 @@ session_start();
                 </div>
                 <div class="chat-profile-stack">
                     <a class="profile-circle">
-                        <img src="../assets/Bootstrap-person-fill-icon.png" alt="">
+                        <img src="assets/Bootstrap-person-fill-icon.png" alt="">
                     </a>
                     <span class="d-flex flex-column">
                         <small class="fs-5">John Doe</small>
@@ -150,7 +150,7 @@ session_start();
         <div class="right-side">
             <div class="chat-profile-page">
                 <a class="profile-circle">
-                    <img src="../assets/Bootstrap-person-fill-icon.png" alt="">
+                    <img src="assets/Bootstrap-person-fill-icon.png" alt="">
                 </a>
                 <span class="d-flex flex-column">
                         <small class="fs-5">John Doe</small>
