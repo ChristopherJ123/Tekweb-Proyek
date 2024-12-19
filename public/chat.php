@@ -73,6 +73,12 @@ if (isset($_GET['target'])) { // Kalau user tidak ditemukan maka reset page
             background-color: #cccccc;
         }
 
+        .profile-circle img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
         .chat-profile-stacks {
             margin: 0.1em 0.8em 0.1em 0em;
         }
@@ -196,7 +202,8 @@ if (isset($_GET['target'])) { // Kalau user tidak ditemukan maka reset page
                 height: 35px;
             }
             .profile-circle img {
-                width: 24px;
+                width: 35px;
+                height: 35px;
             }
             .chat-profile-stack {
                 height: 48px;
