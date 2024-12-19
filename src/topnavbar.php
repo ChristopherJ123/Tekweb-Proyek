@@ -105,7 +105,7 @@ global $conn;
             </div>
             <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$_SESSION['profile_picture']?>' alt='pp'>
             <div class="relative flex justify-end">
-                <a id="profile" href="#"><?=$_SESSION['username']?></a>
+                <a id="profile" href="profile.php"><?=$_SESSION['username']?></a>
                 <div id="profileDrpDwn" class="absolute flex flex-col gap-2 p-4 top-8 rounded bg-white shadow border" style="display: none">
                     <div class="flex lg:hidden gap-2">
                         <span class="material-symbols-outlined">

@@ -1,58 +1,72 @@
 <?php
+include '../../src/db.php';
+global $conn;
 session_start();
-include "../../src/db.php";
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['profile_picture'])) {
-    $user_id = $_SESSION['user_id'];
-    $file = $_FILES['profile_picture'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errors = [];
+    if (isset($_SESSION['user_id'])) {
+        $name = htmlspecialchars($_POST['name']);
+        $description = htmlspecialchars($_POST['description']);
+        $price = (float)htmlspecialchars($_POST['price']);
+        $stock = (int)htmlspecialchars($_POST['stok']);
+        $image = '';
 
-    // Validate the file
-    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-    $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        //jika ada gambar dapat diupload
+        if (!empty($_FILES['gambar']['name'])) {
+            $targetDir = "../images/";
+            if (!is_dir($targetDir)) {
+                mkdir($targetDir, 0755, true); //membuat folder jika belum ada
+            }
 
-    if (!in_array($file_extension, $allowed_extensions)) {
-        $_SESSION['errors'] = ["Invalid file type. Only JPG, JPEG, PNG, or GIF allowed."];
-        header("Location: ../profile.php");
-        exit();
-    }
+            $fileType = strtolower(pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION));
+            $allowedTypes = ['jpg', 'jpeg', 'png'];
+            $maxFileSize = 2 * 1024 * 1024; // 2MB Max image size
 
-    if ($file['size'] > 2 * 1024 * 1024) { // 2 MB limit
-        $_SESSION['errors'] = ["File size exceeds 2MB limit."];
-        header("Location: ../profile.php");
-        exit();
-    }
+            // Error handling
+            if (!in_array($fileType, $allowedTypes)) {
+                $errors[] = "Format gambar tidak di support";
+            }
 
-    // Create upload directory if it doesn't exist
-    $upload_dir = "../uploads/profile_pictures/";
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0755, true);
-    }
+            if ($_FILES['gambar']['size'] > $maxFileSize) {
+                $errors[] = "Ukuran gambar melebihi 2MB";
+            }
 
-    // Generate unique file name
-    $new_file_name = uniqid() . '.' . $file_extension;
-    $upload_path = $upload_dir . $new_file_name;
+            $imageName = uniqid() . '.' . $fileType;
+            $targetFilePath = $targetDir . $imageName;
 
-    // Move the uploaded file
-    if (move_uploaded_file($file['tmp_name'], $upload_path)) {
-        // Save the relative path to the database
-        $relative_path = "uploads/profile_pictures/" . $new_file_name;
+            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $targetFilePath)) {
+                $image = 'https://pasarkakilima.guraa.me' . '/images/' . $imageName;
 
-        $query = "UPDATE users SET profile_picture = ? WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("si", $relative_path, $user_id);
+                //kode untuk memasukkan data ke database
+                $stmt = $conn->prepare("INSERT INTO products (name, description, price, quantity_in_stock, image_link, author) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssdiss", $name, $description, $price, $stock, $image, $_SESSION['user_id']);
 
-        if ($stmt->execute()) {
-            $_SESSION['success'] = "Profile picture updated successfully.";
+                if ($stmt->execute()) {
+                    $success = "Produk berhasil ditambahkan!";
+                    $_SESSION['success'] = $success;
+                    $stmt->close();
+                    header("Location: ../index.php");
+                    exit();
+                } else {
+                    $errors[] = "Gagal menambahkan produk: " . $stmt->error;
+                }
+
+                $stmt->close();
+            } else {
+                $errors[] = "Gagal mengupload gambar.";
+            }
         } else {
-            $_SESSION['errors'] = ["Failed to update database."];
+            $errors[] = "Gambar tidak boleh kosong.";
         }
-
-        $stmt->close();
     } else {
-        $_SESSION['errors'] = ["Failed to upload file."];
+        $errors[] = "Anda belum login. Mohon login terlebih dahulu.";
+    }
+
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        header("Location: ../register_product.php");
+        exit();
     }
 }
 
-header("Location: ../profile.php");
-exit();
-?>
