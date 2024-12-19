@@ -7,7 +7,7 @@ session_start()
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
+    <title>Pasar Kaki Lima | Register Page</title>
     <style>
         * {
             box-sizing: border-box;

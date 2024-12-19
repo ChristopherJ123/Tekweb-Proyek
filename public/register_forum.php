@@ -17,7 +17,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Forum Page</title>
+    <title>Pasar Kaki Lima | Register Forum Page</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Gaya Umum */

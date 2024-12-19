@@ -59,7 +59,7 @@ if (isset($_SESSION['cart'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Pasar Kaki Lima | Checkout</title>
     <link rel="stylesheet" href="../public/styles.css">
     <style>
         * {
