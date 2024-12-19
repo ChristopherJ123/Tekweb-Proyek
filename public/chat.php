@@ -20,6 +20,8 @@ if (!isset($_SESSION['user_id'])) {
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat | PasarKakiLima</title>
+    <link rel="stylesheet" href="styles.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -52,12 +54,8 @@ if (!isset($_SESSION['user_id'])) {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            padding: 0.3em;
             margin: 0.2em 0.4em 0.2em 0.6em;
             background-color: #cccccc;
-        }
-        .profile-circle img {
-            width: 40px;
         }
 
         .chat-profile-stacks {
@@ -216,7 +214,7 @@ if (!isset($_SESSION['user_id'])) {
                     foreach ($result as $row) { ?>
                         <div onclick="location.href='chat.php?target=<?=$row['id']?>'" class="chat-profile-stack">
                             <span class="profile-circle">
-                                <img src="<?=$row['profile_picture']?>" alt="pp">
+                                <img class="rounded-full" src="<?=$row['profile_picture']?>" alt="pp">
                             </span>
                             <span class="d-flex flex-column">
                                 <small><?=$row['username']?></small>
@@ -239,7 +237,7 @@ if (!isset($_SESSION['user_id'])) {
                 ?>
                     <div class="chat-profile-page">
                         <a class="profile-circle">
-                            <img src="<?=$row['profile_picture']?>" alt="">
+                            <img class="rounded-full" src="<?=$row['profile_picture']?>" alt="">
                         </a>
                         <span class="d-flex flex-column">
                         <small><?=$row['username']?></small>
