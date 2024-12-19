@@ -45,7 +45,7 @@ $stmt->close();
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             color: #333;
-            padding: 20px;
+            padding: 0px;
         }
         .profile-container {
             max-width: 800px;
@@ -57,6 +57,9 @@ $stmt->close();
         }
         .profile-header {
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
             background: #ff9f43;
             color: white;
