@@ -208,16 +208,17 @@ if (isset($_SESSION['success'])) { ?>
                 <button class="edit-btn">Edit Contact Info</button>
             </div>
 
-            <!-- Edit Section (Only for Owner) -->
+                        <!-- Edit Section (Only for Owner) -->
             <div class="profile-section">
-                <h2>Edit Profile</h2>
-                <div class="edit-section">
-                    <input type="text" placeholder="Edit Username" value="<?= htmlspecialchars($user_data['username']) ?>">
-                    <textarea placeholder="Edit Bio"><?= htmlspecialchars($user_data['bio']) ?></textarea>
-                    <input type="text" placeholder="Edit Phone Number" value="<?= htmlspecialchars($user_data['no_telp']) ?>">
-                    <button>Save Changes</button>
-                </div>
+                <h2>Edit Profile</h2>   
+                <form action="scripts/update_profile.php" method="post" class="edit-section">
+                    <input type="text" name="username" placeholder="Edit Username" value="<?= htmlspecialchars($user_data['username']) ?>">
+                    <textarea name="bio" placeholder="Edit Bio"><?= htmlspecialchars($user_data['bio']) ?></textarea>
+                    <input type="text" name="no_telp" placeholder="Edit Phone Number" value="<?= htmlspecialchars($user_data['no_telp']) ?>">
+                    <button type="submit">Save Changes</button>
+                </form>
             </div>
+
         </div>
     </div>
 </div>
@@ -226,7 +227,7 @@ if (isset($_SESSION['success'])) { ?>
 <div class="popup" id="popup">
     <div class="popup-content">
         <h3>Change Profile Picture</h3>
-        <form action="update_profile_picture.php" method="post" enctype="multipart/form-data">
+        <form action="scripts/update_profile_picture.php" method="post" enctype="multipart/form-data">
             <input type="file" name="profile_picture" accept="image/*">
             <button type="submit">Upload</button>
         </form>
