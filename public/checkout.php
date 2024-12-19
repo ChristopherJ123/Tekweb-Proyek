@@ -103,6 +103,11 @@ if (isset($_SESSION['cart'])) {
         }
         .address-card p {
             margin: 5px 0;
+            font-size: 14px;
+        }
+        .address-card strong {
+            font-size: 16px;
+            color: #ff9f43;
         }
         .add-address-btn a {
             display: block;
@@ -168,7 +173,7 @@ if (isset($_SESSION['cart'])) {
         <div class="address-section">
             <?php if (empty($addresses)) { ?>
                 <div class="text-center">
-                    <p class="text-lg mb-4">You don’t have any saved addresses.</p>
+                    <p class="text-lg mb-4">Tidak ada alamat tersimpan.</p>
                     <div class="add-address-btn">
                         <a href="add_address.php">Add Address</a>
                     </div>
@@ -176,11 +181,11 @@ if (isset($_SESSION['cart'])) {
             <?php } else { 
                 foreach ($addresses as $address) { ?>
                     <div class="address-card">
-                        <p><strong><?= htmlspecialchars($address['full_name']) ?></strong></p>
-                        <p><?= htmlspecialchars($address['alamat']) ?></p>
-                        <p><?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
-                        <p><?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
-                        <p><em><?= htmlspecialchars($address['catatan']) ?></em></p>
+                        <p><strong>Name:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
+                        <p><strong>Address:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
+                        <p><strong>Subdistrict & City:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
+                        <p><strong>Province & Postal Code:</strong> <?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
+                        <p><strong>Notes:</strong> <?= htmlspecialchars($address['catatan']) ?></p>
                     </div>
                 <?php } ?>
                 <div class="add-address-btn">
