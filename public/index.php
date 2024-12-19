@@ -96,6 +96,7 @@ global $conn
             $products = mysqli_query($conn, $queryProductsFromAuthor);
 
             $forumID = $forum['forum_id'];
+            $authorID = $forum['id'];
             $authorName = $forum['username'];
             $authorPP = $forum['profile_picture'];
             ?>
@@ -103,6 +104,11 @@ global $conn
                 <div class='flex items-center gap-2'>
                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
                     <a href='#' class="text-sm sm:text-base"><?=$authorName?></a>
+                    <a href="chat.php?target=<?=$authorID?>">
+                        <span class="material-symbols-outlined text-base">
+                            chat
+                        </span>
+                    </a>
                 </div>
                 <div class='grid grid-cols-2 sm:grid-cols-3 gap-2 justify-items-center'>
                     <?php

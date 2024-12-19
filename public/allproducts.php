@@ -103,6 +103,7 @@ if (isset($_GET['s'])) {
             $productImage = $product['image_link'];
             $productName = $product['name'];
             $productPrice = number_format($product['price'], 0, ',', '.');
+            $authorID = $product['id'];
             $authorName = $product['username'];
             $authorPP = $product['profile_picture']
             ?>
@@ -113,6 +114,11 @@ if (isset($_GET['s'])) {
                     <div class="flex items-center gap-2">
                         <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
                         <a href="profile.php?p=<?=urlencode($authorName)?>" class="text-ellipsis overflow-hidden text-sm sm:text-base"><?=$authorName?></a>
+                        <a href="chat.php?target=<?=$authorID?>">
+                            <span class="material-symbols-outlined text-base">
+                                chat
+                            </span>
+                        </a>
                     </div>
                     <div class="flex justify-between items-center mb-2">
                         <div class="text-sm sm:text-base">Rp<?=$productPrice?></div>
