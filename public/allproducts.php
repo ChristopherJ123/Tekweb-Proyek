@@ -106,7 +106,7 @@ if (isset($_GET['s'])) {
             $authorName = $product['username'];
             $authorPP = $product['profile_picture']
             ?>
-            <div class='flex flex-col sm:w-[200px] shadow border p-2 bg-white hover:scale-[1.01] transition'>
+            <div class='flex flex-col sm:w-[200px] shadow border p-2 bg-white rounded-lg hover:scale-[1.01] transition'>
                 <img onclick="location.href='product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>'" class='w-[200px] h-[200px] object-cover object-center' src='<?= !empty($productImage) ? $productImage : 'https://cdn.dribbble.com/users/3512533/screenshots/14168376/web_1280___8_4x.jpg'?>' alt='product'>
                 <div class="flex flex-col h-full justify-between">
                     <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em] text-sm sm:text-base'> <?=$productName?> </a>
