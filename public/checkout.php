@@ -75,7 +75,7 @@ global $conn;
             margin-bottom: 5px;
             font-weight: bold;
         }
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -105,22 +105,6 @@ global $conn;
         }
         .checkout-btn:hover {
             background: #e68a33;
-        }
-        .add-address-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: #007bff;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-top: 10px;
-            cursor: pointer;
-        }
-        .add-address-btn:hover {
-            background: #0056b3;
         }
     </style>
 </head>
@@ -162,22 +146,8 @@ global $conn;
                 </div>
                 <div class="form-group">
                     <label for="address">Shipping Address</label>
-                    <select id="address" name="address" required>
-                        <?php
-                        $user_id = $_SESSION['user_id']; // Assume the user is logged in
-                        $queryAddresses = "SELECT * FROM addresses WHERE user_id = '$user_id'";
-                        $addresses = mysqli_query($conn, $queryAddresses);
-                        while ($address = mysqli_fetch_assoc($addresses)) {
-                            echo "<option value=\"" . $address['id'] . "\">" . $address['full_name'] . " - " . $address['alamat'] . ", " . $address['kecamatan'] . ", " . $address['kota'] . ", " . $address['provinsi'] . " - " . $address['kode_pos'] . "</option>";
-                        }
-                        ?>
-                    </select>
+                    <textarea id="address" name="address" rows="4" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="new-address">Or Add a New Address</label>
-                    <textarea id="new-address" name="new_address" rows="4" placeholder="Enter new address details..."></textarea>
-                </div>
-                <button type="button" class="add-address-btn" style="background: red;">Add Address</button>
                 <div class="total-section">
                     <strong>Total: Rp<?=number_format($total, 0, ',', '.');?></strong>
                 </div>
