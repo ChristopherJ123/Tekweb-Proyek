@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../src/db.php';
+include '../../src/db.php';
 global $conn;
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -34,7 +34,7 @@ if ($stmtValidateAddress) {
 
     if (mysqli_num_rows($resultAddress) === 0) {
         $_SESSION['errors'] = ['Invalid address selected.'];
-        header('Location: checkout.php');
+        header('Location: public/checkout.php');
         exit();
     }
     mysqli_stmt_close($stmtValidateAddress);
@@ -45,7 +45,7 @@ if ($stmtValidateAddress) {
 // Fetch cart items from session
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     $_SESSION['errors'] = ['Your cart is empty.'];
-    header('Location: checkout.php');
+    header('Location: public/checkout.php');
     exit();
 }
 
@@ -82,7 +82,7 @@ try {
                 $subtotal = $price * $quantity;
                 $total_price += $subtotal;
 
-                $queryInsertDetail = "INSERT INTO transaction_details (transaction_id, product_id, quantity, total_price) VALUES (?, ?, ?, ?)";
+                $queryInsertDetail = "INSERT INTO transaction_items (transaction_id, product_id, quantity, total_price) VALUES (?, ?, ?, ?)";
                 $stmtDetail = mysqli_prepare($conn, $queryInsertDetail);
                 if ($stmtDetail) {
                     mysqli_stmt_bind_param($stmtDetail, 'iiid', $transaction_id, $product_id, $quantity, $subtotal);
@@ -124,7 +124,7 @@ try {
 } catch (Exception $e) {
     mysqli_rollback($conn);
     $_SESSION['errors'] = [$e->getMessage()];
-    header('Location: checkout.php');
+    header('Location: ../index.php');
     exit();
 }
 ?>
