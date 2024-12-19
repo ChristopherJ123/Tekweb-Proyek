@@ -79,13 +79,20 @@ global $conn
         <?php
         // Products
         $queryForums = "
-            SELECT DISTINCT forum_id, u.id, u.username, u.profile_picture FROM forum_products
+            SELECT forum_id, u.id, u.username, u.profile_picture FROM forum_products
             JOIN products p ON forum_products.product_id = p.id
             JOIN users u ON p.author = u.id
+            GROUP BY forum_id
+            ORDER BY forum_id DESC
             ";
         $forums = mysqli_query($conn, $queryForums);
         foreach ($forums as $forum) {
-            $queryProductsFromAuthor = "SELECT * FROM products WHERE author = {$forum['id']}";
+            $forumID = $forum['forum_id'];
+            $queryProductsFromAuthor = "
+                SELECT * FROM forum_products
+                JOIN products p ON forum_products.product_id = p.id
+                WHERE forum_id = '$forumID'
+            ";
             $products = mysqli_query($conn, $queryProductsFromAuthor);
 
             $forumID = $forum['forum_id'];
