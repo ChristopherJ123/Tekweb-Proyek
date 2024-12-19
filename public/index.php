@@ -49,7 +49,7 @@ global $conn
         <script>
             Swal.fire({
                 title: "Error!",
-                text: "<?= implode("<br>", $_SESSION['errors']) ?>",
+                html: "<?= implode("<br>", $_SESSION['errors']) ?>",
                 icon: "error"
             });
         </script>
@@ -63,7 +63,7 @@ global $conn
         <script>
             Swal.fire({
                 title: "Success",
-                text: "<?= $_SESSION['success'] ?>",
+                html: "<?= $_SESSION['success'] ?>",
                 icon: "success"
             });
         </script>
