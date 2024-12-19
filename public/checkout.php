@@ -184,7 +184,7 @@ if (isset($_SESSION['cart'])) {
                     </div>
                 <?php } ?>
                 <div class="add-address-btn">
-                    <a href="add_address_page.php">Add Address</a>
+                    <a href="add_address.php">Add Address</a>
                 </div>
             <?php } ?>
         </div>
