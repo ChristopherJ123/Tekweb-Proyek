@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $success = "Foto profil berhasil diperbarui.";
                     $_SESSION['success'] = $success;
                     $stmt->close();
+                    $_SESSION['profile_picture'] = $image;
                     header("Location: ../profile.php");
                     exit();
                 } else {
