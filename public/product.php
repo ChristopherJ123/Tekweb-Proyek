@@ -86,7 +86,7 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body class="poppins-regular bg-slate-300">
+<body class="poppins-regular bg-slate-300 flex-col">
 <!--  Top Nav Bar & Scripts  -->
 <?php include '../src/topnavbar.php'?>
 
@@ -95,59 +95,56 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
     <div class="flex justify-center">
         <?php
         if ($status === 1) { ?>
-            <div class="flex sm:max-w-[83%] md:max-w-[75%] lg:max-w-[75%] shadow border p-2 mx-4 bg-white rounded-lg">
-                <div class="min-w-[200px]">
+            <div class="flex sm:w-[83%] md:max-w-[75%] lg:max-w-[75%] shadow border p-2 mx-4 bg-white rounded-lg">
+                <div class="min-w-[100px]">
                     <img class="w-[200px] h-[200px] object-cover object-center" src="<?=$productImageLink?>">
                     <div class="flex flex-col gap-y-2 mt-4">
                         <div class="flex justify-between items-center mb-2">
                             <div class="text-sm sm:text-base">Rp <?=$productPrice?></div>
                             <div class="flex items-center h-5/6">
                                 <button onclick="addOrDecreaseProduct(<?=$productID_?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
-                                <span class="material-symbols-outlined text-sm">
-                                    remove
-                                </span>
+                                    <span class="material-symbols-outlined text-sm">
+                                        remove
+                                    </span>
                                 </button>
                                 <div id="product<?=$productID_?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
                                 <button onclick="addOrDecreaseProduct(<?=$productID_?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
-                                <span class="material-symbols-outlined text-sm">
-                                    add
-                                </span>
+                                    <span class="material-symbols-outlined text-sm">
+                                        add
+                                    </span>
                                 </button>
 
                             </div>
                         </div>
                         <div>
                             <button onclick="addToCart(<?=$productID_?>)" class="flex justify-center text-sm w-full items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
-                    <span class="material-symbols-outlined text-sm">
-                        add</span>
+                        <span class="material-symbols-outlined text-sm">
+                            add</span>
                                 <span>
-                        Masukkan keranjang
-                    </span>
+                            Masukkan keranjang
+                        </span>
                             </button>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex flex-col mx-4 gap-y-2" >
-                    <h1 class="text-2xl font-semibold mt-2"><?=$productName?></h1>
+                    <h1 class="sm:text-2xl md:text-2xl lg:text-2xl font-semibold mt-2"><?=$productName?></h1>
                     <hr>
-
                     <div class="flex items-center gap-2 mb-2">
                         <img class="w-[30px] h-[30px] object-cover object-center rounded-3xl" src="<?=$productAuthorImageLink?>" alt="pp">
-                        <h1 class="text-lg"><?=$productAuthorName?></h1>
+                        <h1 class="sm:text-medium lg:text-lg"><?=$productAuthorName?></h1>
                         <a class="flex align-center" href="chat.php?target=<?=$productAuthorID?>">
-                            <span class="material-symbols-outlined">
-                                chat
-                            </span>
+                                <span class="material-symbols-outlined">
+                                    chat
+                                </span>
                         </a>
                     </div>
 
-                    <h1 class="text-2xl lg:text-3xl  font-semibold">Rp <?=$productPrice?></h1>
+                    <h1 class="text-3xl font-semibold">Rp <?=$productPrice?></h1>
 
-                    <p><?=$productDescription?></p>
+                    <p class="sm:text-medium md:text-medium lg:text-lg"><?=$productDescription?></p>
                 </div>
-
-
             </div>
         <?php } else { ?>
             <div>
@@ -161,12 +158,12 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
     <div class="grid grid-cols-2 sm:flex flex-wrap gap-2 m-4 justify-center">
         <?php
         $queryProducts = "
-                    SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
-                    FROM products p 
-                    JOIN users u on u.id = p.author
-                    WHERE p.id != '$productID_'
-                    ORDER BY p.created_at DESC 
-                    ";
+                        SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
+                        FROM products p 
+                        JOIN users u on u.id = p.author
+                        WHERE p.id != '$productID_'
+                        ORDER BY p.created_at DESC 
+                        ";
         $result = mysqli_query($conn, $queryProducts);
         foreach ($result as $product) {
             $productID_ = $product['id'];
@@ -188,25 +185,25 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                         <div class="text-sm sm:text-base">Rp <?=$productPrice?></div>
                         <div class="flex items-center h-5/6">
                             <button onclick="addOrDecreaseProduct(<?=$productID_?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
-                                <span class="material-symbols-outlined text-sm">
-                                    remove
-                                </span>
+                                    <span class="material-symbols-outlined text-sm">
+                                        remove
+                                    </span>
                             </button>
                             <div id="product<?=$productID_?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
                             <button onclick="addOrDecreaseProduct(<?=$productID_?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
-                                <span class="material-symbols-outlined text-sm">
-                                    add
-                                </span>
+                                    <span class="material-symbols-outlined text-sm">
+                                        add
+                                    </span>
                             </button>
                         </div>
                     </div>
                     <button onclick="addToCart(<?=$productID_?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
-                        <span class="material-symbols-outlined text-sm">
-                            add
-                        </span>
+                            <span class="material-symbols-outlined text-sm">
+                                add
+                            </span>
                         <span>
-                            Masukkan keranjang
-                        </span>
+                                Masukkan keranjang
+                            </span>
                     </button>
                 </div>
             </div>
