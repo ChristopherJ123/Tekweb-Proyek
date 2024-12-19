@@ -87,6 +87,8 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
 
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body class="poppins-regular bg-slate-300">
 <!--  Top Nav Bar & Scripts  -->
@@ -107,7 +109,7 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
             <div class="flex sm:max-w-[83%] md:max-w-[75%] lg:max-w-[75%] shadow border p-2 mx-4 bg-white rounded-lg">
                 <div class="min-w-[200px]">
                     <img class="w-[200px] h-[200px] object-cover object-center" src="<?=$productImageLink?>">
-                    <div class="hidden sm:flex flex-col gap-y-2 mt-4">
+                    <div class="flex flex-col gap-y-2 mt-4">
                         <div class="flex justify-between items-center mb-2">
                             <div class="text-sm sm:text-base">Rp <?=$productPrice?></div>
                             <div class="flex items-center h-5/6">
@@ -153,36 +155,6 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                     <h1 class="text-2xl lg:text-3xl  font-semibold">Rp <?=$productPrice?></h1>
 
                     <p><?=$productDescription?></p>
-
-                    <!-- untuk tampilan kecil: muncul di bawah -->
-                    <div class="flex flex-col sm:hidden gap-y-2">
-                        <div class="flex justify-between items-center mb-2">
-                            <div class="text-sm sm:text-base">Rp<?=$productPrice?></div>
-                            <div class="flex items-center h-5/6">
-                                <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
-                                    <span class="material-symbols-outlined text-sm">
-                                        remove
-                                    </span>
-                                </button>
-                                <div id="product<?=$productID?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
-                                <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
-                                    <span class="material-symbols-outlined text-sm">
-                                        add
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <button onclick="addToCart(<?=$productID?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
-                                <span class="material-symbols-outlined text-sm">
-                                    add
-                                </span>
-                                <span>
-                                    Masukkan keranjang
-                                </span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
 
 
@@ -202,6 +174,7 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                     SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
                     FROM products p 
                     JOIN users u on u.id = p.author
+                    WHERE p.id != '$productID'
                     ORDER BY p.created_at DESC 
                     ";
         $result = mysqli_query($conn, $queryProducts);
