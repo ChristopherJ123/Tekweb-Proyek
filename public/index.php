@@ -103,7 +103,7 @@ global $conn
             <div class='flex flex-col gap-2 bg-white p-2 rounded-lg shadow'>
                 <div class='flex items-center gap-2'>
                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
-                    <a href='#' class="text-sm sm:text-base"><?=$authorName?></a>
+                    <a href='profile.php?u=<?=$authorName?>' class="text-sm sm:text-base"><?=$authorName?></a>
                     <a href="chat.php?target=<?=$authorID?>">
                         <span class="material-symbols-outlined text-base">
                             chat
