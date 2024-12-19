@@ -83,7 +83,7 @@ if (isset($_GET['s'])) {
         <?php
         if (isset($searchTerm)) {
             $queryProducts = "
-                        SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
+                        SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture, u.id as author_id 
                         FROM products p 
                         JOIN users u on u.id = p.author
                         WHERE p.name LIKE '%$searchTerm%'
@@ -91,7 +91,7 @@ if (isset($_GET['s'])) {
                         ";
         } else {
             $queryProducts = "
-                        SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
+                        SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture, u.id as author_id
                         FROM products p 
                         JOIN users u on u.id = p.author
                         ORDER BY p.created_at DESC 
@@ -103,7 +103,7 @@ if (isset($_GET['s'])) {
             $productImage = $product['image_link'];
             $productName = $product['name'];
             $productPrice = number_format($product['price'], 0, ',', '.');
-            $authorID = $product['id'];
+            $authorID = $product['author_id'];
             $authorName = $product['username'];
             $authorPP = $product['profile_picture']
             ?>
