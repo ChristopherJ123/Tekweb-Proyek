@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_param("isssssis", $user_id, $full_name, $alamat, $provinsi, $kota, $kecamatan, $kode_pos, $catatan);
         if ($stmt->execute()) {
             $_SESSION['success'] = 'Address added successfully!';
-            header('Location: ../checkout.php'); // Redirect back to the form
+            header('Location: ../index.php'); // Redirect back to the form
             exit;
         } else {
             $_SESSION['errors'] = ['Failed to save address.'];
