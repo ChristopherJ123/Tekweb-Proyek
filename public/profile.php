@@ -11,9 +11,24 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+$usernameToDisplay = $user_id;
+
+if (isset($_GET['u']) && !empty($_GET['u'])) {
+    $query = "SELECT id FROM users WHERE username = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $_GET['u']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $usernameToDisplay = $row['id'];
+    }
+    $stmt->close();
+}
+
 $query = "SELECT username, email, no_telp, bio, profile_picture FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $user_id);
+$stmt->bind_param("i", $usernameToDisplay);
 $stmt->execute();
 $result = $stmt->get_result();
 $user_data = $result->fetch_assoc();
@@ -199,9 +214,10 @@ if (isset($_SESSION['success'])) { ?>
             <img src="<?= htmlspecialchars($user_data['profile_picture'] ?: 'uploads/default_profile.png') ?>" alt="Profile Picture">
             <h1><?= htmlspecialchars($user_data['username']) ?></h1>
             <p><?= htmlspecialchars($user_data['bio']) ?></p>
-            <button class="edit-btn" onclick="togglePopup()">Edit Profile Picture</button>
+            <?php if ($usernameToDisplay == $user_id) { ?>
+                <button class="edit-btn" onclick="togglePopup()">Edit Profile Picture</button>
+            <?php } ?>
         </div>
-
 
         <!-- Profile Body -->
         <div class="profile-body">
@@ -210,24 +226,89 @@ if (isset($_SESSION['success'])) { ?>
                 <h2>Contact Information</h2>
                 <p>Email: <?= htmlspecialchars($user_data['email']) ?></p>
                 <p>Phone Number: <?= htmlspecialchars($user_data['no_telp']) ?></p>
-                <button class="edit-btn">Edit Contact Info</button>
+                <?php if ($usernameToDisplay == $user_id) { ?>
+                    <button class="edit-btn">Edit Contact Info</button>
+                <?php } ?>
             </div>
 
-                        <!-- Edit Section (Only for Owner) -->
-            <div class="profile-section">
-                <h2>Edit Profile</h2>   
-                <form action="scripts/update_profile.php" method="post" class="edit-section">
-                    <input type="text" name="username" placeholder="Edit Username" value="<?= htmlspecialchars($user_data['username']) ?>">
-                    <textarea name="bio" placeholder="Edit Bio"><?= htmlspecialchars($user_data['bio']) ?></textarea>
-                    <input type="text" name="no_telp" placeholder="Edit Phone Number" value="<?= htmlspecialchars($user_data['no_telp']) ?>">
-                    <button type="submit">Save Changes</button>
-                </form>
-            </div>
-
+            <!-- Edit Section (Only for Owner) -->
+            <?php if ($usernameToDisplay == $user_id) { ?>
+                <div class="profile-section">
+                    <h2>Edit Profile</h2>   
+                    <form action="scripts/update_profile.php" method="post" class="edit-section">
+                        <input type="text" name="username" placeholder="Edit Username" value="<?= htmlspecialchars($user_data['username']) ?>">
+                        <textarea name="bio" placeholder="Edit Bio"><?= htmlspecialchars($user_data['bio']) ?></textarea>
+                        <input type="text" name="no_telp" placeholder="Edit Phone Number" value="<?= htmlspecialchars($user_data['no_telp']) ?>">
+                        <button type="submit">Save Changes</button>
+                    </form>
+                </div>
+            <?php } ?>
         </div>
     </div>
 </div>
 
+<div class="grid grid-cols-2 sm:flex flex-wrap gap-2 m-4 justify-center">
+        <?php
+        $userid= $_SESSION['user_id'];
+        $queryProducts = "
+                    SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
+                    FROM products p 
+                    JOIN users u on u.id = p.author
+                    WHERE u.id =  '$user_id'
+                    ORDER BY p.created_at DESC 
+                    ";
+        $result = mysqli_query($conn, $queryProducts);
+        foreach ($result as $product) {
+            $productID = $product['id'];
+            $productImage = $product['image_link'];
+            $productName = $product['name'];
+            $productPrice = number_format($product['price'], 0, ',', '.');
+            $authorID = $product['id'];
+            $authorName = $product['username'];
+            $authorPP = $product['profile_picture'];
+            ?>
+            <div class='flex flex-col sm:w-[200px] shadow border p-2 bg-white rounded-lg hover:scale-[1.01] transition'>
+                <img onclick="location.href='product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>'" class='w-[200px] h-[200px] object-cover object-center' src='<?= !empty($productImage) ? $productImage : 'https://cdn.dribbble.com/users/3512533/screenshots/14168376/web_1280___8_4x.jpg'?>' alt='product'>
+                <div class="flex flex-col h-full justify-between">
+                    <a href="product.php?p=<?=urlencode($productName)?>&author=<?=urlencode($authorName)?>" class='overflow-hidden text-ellipsis line-clamp-3 mb-3 min-h-[3em] text-sm sm:text-base'> <?=$productName?> </a>
+                    <div class="flex items-center gap-2">
+                        <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$authorPP?>' alt='pp'>
+                        <a href="profile.php?u=<?=urlencode($authorName)?>" class="text-ellipsis overflow-hidden text-sm sm:text-base"><?=$authorName?></a>
+                        <a href="chat.php?target=<?=$authorID?>">
+                            <span class="material-symbols-outlined text-base">
+                                chat
+                            </span>
+                        </a>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <div class="text-sm sm:text-base">Rp<?=$productPrice?></div>
+                        <div class="flex items-center h-5/6">
+                            <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
+                                <span class="material-symbols-outlined text-sm">
+                                    remove
+                                </span>
+                            </button>
+                            <div id="product<?=$productID?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
+                            <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
+                                <span class="material-symbols-outlined text-sm">
+                                    add
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="addToCart(<?=$productID?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                        <span class="material-symbols-outlined text-sm">
+                            add
+                        </span>
+                        <span>
+                            Masukkan keranjang
+                        </span>
+                    </button>
+                </div>
+            </div>
+        <?php }
+        ?>
+    </div>
 
 <div class="popup" id="popup">
     <div class="popup-content">
