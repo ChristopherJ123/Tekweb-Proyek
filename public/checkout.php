@@ -219,7 +219,7 @@ if (isset($_SESSION['cart'])) {
                 <p>Your cart is empty.</p>
             <?php } else { 
                 foreach ($cartItems as $index => $item) { ?>
-                    <div class="cart-item" id="cart-card-<?= $index ?>" onclick="selectCard('cart', <?= $index ?>)">
+                    <div class="cart-item" id="cart-card-<?= $index ?>">
                         <img src="<?= htmlspecialchars($item['image_link']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                         <div class="cart-item-details">
                             <h3><?= htmlspecialchars($item['name']) ?></h3>
@@ -247,6 +247,9 @@ if (isset($_SESSION['cart'])) {
                         <p><strong>Notes:</strong> <?= htmlspecialchars($address['catatan']) ?></p>
                     </div>
                 <?php } ?>
+                <div class="add-address-btn">
+                    <a href="add_address.php">Add Address</a>
+                </div>
             <?php } ?>
         </div>
         <div class="process-checkout-btn">
