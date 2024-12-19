@@ -117,7 +117,7 @@ global $conn;
                         <span class="material-symbols-outlined">
                             account_circle
                         </span>
-                        <a href="#">Profil saya</a>
+                        <a href="profile.php">Profil saya</a>
                     </div>
                     <div class="flex gap-2">
                         <span class="material-symbols-outlined">

@@ -1,16 +1,40 @@
 <?php
 session_start();
 include "../src/db.php";
+
 global $conn;
+
+// Ensure user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$query = "SELECT username, email, no_telp, bio, profile_picture FROM users WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user_data = $result->fetch_assoc();
+$stmt->close();
 ?>
+
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>User Profile</title>
     <style>
         * {
             margin: 0;
@@ -75,36 +99,6 @@ global $conn;
             display: inline-block;
             padding-bottom: 5px;
         }
-        .product-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .product-item {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            width: calc(50% - 20px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .product-item img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-        .product-item h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .product-item p {
-            font-size: 14px;
-        }
-        .edit-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
         .edit-section input, .edit-section textarea, .edit-section button {
             padding: 10px;
             font-size: 14px;
@@ -121,66 +115,131 @@ global $conn;
         .edit-section button:hover {
             background: #e68a33;
         }
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.2s;
+        }
+        .popup.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .popup-content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .popup-content input {
+            width: 80%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        .popup-content button {
+            padding: 8px 16px;
+            background-color: #ff9f43;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup-content button:hover {
+            background-color: #e68a33;
+        }
     </style>
 </head>
+
 <body>
-    <div>
+<?php
+if (isset($_SESSION['errors'])) { ?>
+    <script>
+        Swal.fire({
+            title: "Error!",
+            text: "<?= implode("<br>", $_SESSION['errors']) ?>",
+            icon: "error"
+        });
+    </script>
     <?php
-    // if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //     $usernameOrEmail = trim(htmlspecialchars($_POST['usernameOrEmail']));
-    //     $password = htmlspecialchars($_POST['password']);
-    //     $errors = [];
-    
-    // }
-    //     $result = mysqli_query($conn, $query);
-    ?>
-        <div class="profile-container">
+    unset($_SESSION['errors']);
+}
+if (isset($_SESSION['success'])) { ?>
+    <script>
+        Swal.fire({
+            title: "Success",
+            text: "<?= $_SESSION['success'] ?>",
+            icon: "success"
+        });
+    </script>
+    <?php
+    unset($_SESSION['success']);
+}
+?>
+
+<!-- Top Nav Bar & Scripts -->
+<?php include '../src/topnavbar.php' ?>
+
+<div>
+    <div class="profile-container">
         <!-- Profile Header -->
         <div class="profile-header">
-            <img src="https://via.placeholder.com/100" alt="Profile Picture">
-            <h1>Username</h1>
-            <p>This is the user bio. bisa diedit.</p>
-            <button class="edit-btn">Edit Profile Picture</button>
+            <img src="<?= htmlspecialchars($user_data['profile_picture'] ?: 'uploads/default_profile.png') ?>" alt="Profile Picture">
+            <h1><?= htmlspecialchars($user_data['username']) ?></h1>
+            <p><?= htmlspecialchars($user_data['bio']) ?></p>
+            <button class="edit-btn" onclick="togglePopup()">Edit Profile Picture</button>
         </div>
+
 
         <!-- Profile Body -->
         <div class="profile-body">
             <!-- Contact Information -->
             <div class="profile-section">
                 <h2>Contact Information</h2>
-                <p>Phone Number: +62 123 456 789</p>
-                <button class="edit-btn">Edit Phone Number</button>
-            </div>
-
-            <!-- Products Section -->
-            <div class="profile-section">
-                <h2>Products Posted</h2>
-                <div class="product-list">
-                    <div class="product-item">
-                        <img src="https://via.placeholder.com/150" alt="Product Image">
-                        <h3>Product Name 1</h3>
-                        <p>Price: Rp50,000</p>
-                    </div>
-                    <div class="product-item">
-                        <img src="https://via.placeholder.com/150" alt="Product Image">
-                        <h3>Product Name 2</h3>
-                        <p>Price: Rp30,000</p>
-                    </div>
-                </div>
+                <p>Email: <?= htmlspecialchars($user_data['email']) ?></p>
+                <p>Phone Number: <?= htmlspecialchars($user_data['no_telp']) ?></p>
+                <button class="edit-btn">Edit Contact Info</button>
             </div>
 
             <!-- Edit Section (Only for Owner) -->
             <div class="profile-section">
                 <h2>Edit Profile</h2>
                 <div class="edit-section">
-                    <input type="text" placeholder="Edit Username">
-                    <textarea placeholder="Edit Bio"></textarea>
-                    <input type="text" placeholder="Edit Phone Number">
+                    <input type="text" placeholder="Edit Username" value="<?= htmlspecialchars($user_data['username']) ?>">
+                    <textarea placeholder="Edit Bio"><?= htmlspecialchars($user_data['bio']) ?></textarea>
+                    <input type="text" placeholder="Edit Phone Number" value="<?= htmlspecialchars($user_data['no_telp']) ?>">
                     <button>Save Changes</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h3>Change Profile Picture</h3>
+        <form action="update_profile_picture.php" method="post" enctype="multipart/form-data">
+            <input type="file" name="profile_picture" accept="image/*">
+            <button type="submit">Upload</button>
+        </form>
+        <button onclick="togglePopup()">Cancel</button>
     </div>
+</div>
+
+<script>
+    function togglePopup() {
+        const popup = document.getElementById('popup');
+        popup.classList.toggle('active');
+    }
+</script>
 </body>
+
 </html>
