@@ -143,12 +143,6 @@ if (isset($_SESSION['cart'])) {
             padding: 10px;
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .cart-item.selected {
-            background-color: #ffebd6;
-            border-color: #ff9f43;
         }
         .cart-item img {
             width: 50px;
@@ -176,36 +170,33 @@ if (isset($_SESSION['cart'])) {
         }
     </style>
     <script>
-        let selectedAddressId = null;
-        let selectedCartItemId = null;
+       let selectedAddressId = null;
 
-        function selectCard(cardType, id) {
-            const allCards = document.querySelectorAll(`.${cardType}-card`);
+function selectCard(cardType, id) {
+    if (cardType === 'address') {
+        const selectedCard = document.getElementById(`address-card-${id}`);
+        
+        if (selectedCard.classList.contains('selected')) {
+            selectedCard.classList.remove('selected');
+            selectedAddressId = null;
+            document.getElementById('process-checkout-button').disabled = true;
+        } else {
+            const allCards = document.querySelectorAll('.address-card');
             allCards.forEach(card => card.classList.remove('selected'));
-
-            const selectedCard = document.getElementById(`${cardType}-card-${id}`);
-            if (selectedCard) {
-                selectedCard.classList.add('selected');
-                if (cardType === 'address') {
-                    selectedAddressId = id;
-                } else if (cardType === 'cart') {
-                    selectedCartItemId = id;
-                }
-            }
-
-            updateProcessButton();
+            
+            selectedCard.classList.add('selected');
+            selectedAddressId = id;
+            document.getElementById('process-checkout-button').disabled = false;
         }
+    }
+}
 
-        function updateProcessButton() {
-            const button = document.getElementById('process-checkout-button');
-            button.disabled = !selectedAddressId || !selectedCartItemId;
-        }
+function processCheckout() {
+    if (selectedAddressId) {
+        location.href = `scripts/process_checkout.php?address_id=${selectedAddressId}`;
+    }
+}
 
-        function processCheckout() {
-            if (selectedAddressId && selectedCartItemId) {
-                location.href = `process_checkout.php?address_id=${selectedAddressId}&cart_id=${selectedCartItemId}`;
-            }
-        }
     </script>
 </head>
 <body>
@@ -213,7 +204,6 @@ if (isset($_SESSION['cart'])) {
         <div class="checkout-header">
             <h1>Checkout</h1>
         </div>
-       
         <div class="cart-items">
             <?php if (empty($cartItems)) { ?>
                 <p>Your cart is empty.</p>
