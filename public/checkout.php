@@ -100,6 +100,12 @@ if (isset($_SESSION['cart'])) {
             padding: 10px;
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .address-card.selected {
+            background-color: #ffebd6;
+            border-color: #ff9f43;
         }
         .address-card p {
             margin: 5px 0;
@@ -137,6 +143,12 @@ if (isset($_SESSION['cart'])) {
             padding: 10px;
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .cart-item.selected {
+            background-color: #ffebd6;
+            border-color: #ff9f43;
         }
         .cart-item img {
             width: 50px;
@@ -147,7 +159,54 @@ if (isset($_SESSION['cart'])) {
         .cart-item-details {
             flex-grow: 1;
         }
+        .process-checkout-btn button {
+            background-color: #ff9f43;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .process-checkout-btn button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
     </style>
+    <script>
+        let selectedAddressId = null;
+        let selectedCartItemId = null;
+
+        function selectCard(cardType, id) {
+            const allCards = document.querySelectorAll(`.${cardType}-card`);
+            allCards.forEach(card => card.classList.remove('selected'));
+
+            const selectedCard = document.getElementById(`${cardType}-card-${id}`);
+            if (selectedCard) {
+                selectedCard.classList.add('selected');
+                if (cardType === 'address') {
+                    selectedAddressId = id;
+                } else if (cardType === 'cart') {
+                    selectedCartItemId = id;
+                }
+            }
+
+            updateProcessButton();
+        }
+
+        function updateProcessButton() {
+            const button = document.getElementById('process-checkout-button');
+            button.disabled = !selectedAddressId || !selectedCartItemId;
+        }
+
+        function processCheckout() {
+            if (selectedAddressId && selectedCartItemId) {
+                location.href = `process_checkout.php?address_id=${selectedAddressId}&cart_id=${selectedCartItemId}`;
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="checkout-container">
@@ -159,8 +218,8 @@ if (isset($_SESSION['cart'])) {
             <?php if (empty($cartItems)) { ?>
                 <p>Your cart is empty.</p>
             <?php } else { 
-                foreach ($cartItems as $item) { ?>
-                    <div class="cart-item">
+                foreach ($cartItems as $index => $item) { ?>
+                    <div class="cart-item" id="cart-card-<?= $index ?>" onclick="selectCard('cart', <?= $index ?>)">
                         <img src="<?= htmlspecialchars($item['image_link']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                         <div class="cart-item-details">
                             <h3><?= htmlspecialchars($item['name']) ?></h3>
@@ -173,25 +232,25 @@ if (isset($_SESSION['cart'])) {
         <div class="address-section">
             <?php if (empty($addresses)) { ?>
                 <div class="text-center">
-                    <p class="text-lg mb-4">Tidak ada alamat tersimpan.</p>
+                    <p class="text-lg mb-4">You don’t have any saved addresses.</p>
                     <div class="add-address-btn">
                         <a href="add_address.php">Add Address</a>
                     </div>
                 </div>
             <?php } else { 
                 foreach ($addresses as $address) { ?>
-                    <div class="address-card">
-                        <p><strong>Nama:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
-                        <p><strong>Alamat:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
-                        <p><strong>Kecamatan & Kota:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
-                        <p><strong>Provinsi & Kode Pos:</strong> <?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
+                    <div class="address-card" id="address-card-<?= $address['id'] ?>" onclick="selectCard('address', <?= $address['id'] ?>)">
+                        <p><strong>Name:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
+                        <p><strong>Address:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
+                        <p><strong>Subdistrict & City:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
+                        <p><strong>Province & Postal Code:</strong> <?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
                         <p><strong>Notes:</strong> <?= htmlspecialchars($address['catatan']) ?></p>
                     </div>
                 <?php } ?>
-                <div class="add-address-btn">
-                    <a href="add_address.php">Add Address</a>
-                </div>
             <?php } ?>
+        </div>
+        <div class="process-checkout-btn">
+            <button id="process-checkout-button" onclick="processCheckout()" disabled>Process Checkout</button>
         </div>
     </div>
 </body>
