@@ -97,12 +97,10 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
 <!--                <div>--><?php //=$productAuthorName?><!--</div>-->
 
         <div class="grid grid-cols-2 shadow border p-2 bg-white rounded-lg">
-            <div class="bg-blue-300">
+            <div class="">
                 <img class="w-[200px] h-[200px] object-cover object-center" src="<?=$productImageLink?>"></img>
             </div>
-            <div>
-                <h1><?=$productName?></h1>
-            </div>
+            <h1><?=$productName?></h1>
 
             <div class="flex items-center gap-2">
                 <div class="w-[30px] h-[30px] object-cover object-center rounded-3xl">
@@ -111,6 +109,7 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                 <h1 class="text-3xl"><?=$productAuthorName?></h1>
             </div>
 
+            <h1><?=$productPrice?></h1>
 
         </div>
 
