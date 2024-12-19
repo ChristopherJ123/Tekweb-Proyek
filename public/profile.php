@@ -249,12 +249,12 @@ if (isset($_SESSION['success'])) { ?>
 
 <div class="grid grid-cols-2 sm:flex flex-wrap gap-2 m-4 justify-center">
         <?php
-        $userid= $_SESSION['user_id'];
+        $userid= $usernameToDisplay;
         $queryProducts = "
                     SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
                     FROM products p 
                     JOIN users u on u.id = p.author
-                    WHERE u.id =  '$user_id'
+                    WHERE u.id =  '$userid'
                     ORDER BY p.created_at DESC 
                     ";
         $result = mysqli_query($conn, $queryProducts);
