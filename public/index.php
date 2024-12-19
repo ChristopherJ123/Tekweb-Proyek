@@ -208,6 +208,7 @@ global $conn
             </div>
             <?php
         }
+        mysqli_close($conn)
         ?>
     </div>
 </body>

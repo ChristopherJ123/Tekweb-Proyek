@@ -147,6 +147,7 @@ if (isset($_GET['s'])) {
                 </div>
             </div>
         <?php }
+        mysqli_close($conn);
         ?>
     </div>
 </body>

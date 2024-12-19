@@ -62,7 +62,7 @@ if (isset($_SESSION['cart'])) {
     <title>Pasar Kaki Lima | Checkout</title>
     <link rel="stylesheet" href="../public/styles.css">
     <style>
-        * {
+         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -102,6 +102,22 @@ if (isset($_SESSION['cart'])) {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: background-color 0.3s;
+            position: relative;
+        }
+        .edit-address-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff9f43;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .edit-address-btn:hover {
+            background: #e68a33;
         }
         .address-card.selected {
             background-color: #ffebd6;
@@ -236,6 +252,7 @@ function processCheckout() {
             <?php } else { 
                 foreach ($addresses as $address) { ?>
                     <div class="address-card" id="address-card-<?= $address['id'] ?>" onclick="selectCard('address', <?= $address['id'] ?>)">
+                    <button class="edit-address-btn" onclick="event.stopPropagation(); location.href='edit_address.php?id=<?= $address['id'] ?>'">Edit</button>
                         <p><strong>Name:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
                         <p><strong>Address:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
                         <p><strong>Subdistrict & City:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
@@ -258,3 +275,6 @@ function processCheckout() {
     </div>
 </body>
 </html>
+
+
+
