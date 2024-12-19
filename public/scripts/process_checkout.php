@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../src/db.php';
-
+global $conn;
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['errors'] = ['You need to log in to access this page.'];
@@ -55,7 +55,7 @@ $cartItems = $_SESSION['cart'];
 mysqli_begin_transaction($conn);
 try {
     // Insert transaction
-    $queryInsertTransaction = "INSERT INTO transactions (user_id, status_id, total_price, created_at, updated_at) VALUES (?, 1, 0, NOW(), NOW())";
+    $queryInsertTransaction = "INSERT INTO transactions (user_id, total_price, created_at, updated_at) VALUES (?, 0, NOW(), NOW())";
     $stmtTransaction = mysqli_prepare($conn, $queryInsertTransaction);
     if ($stmtTransaction) {
         mysqli_stmt_bind_param($stmtTransaction, 'i', $user_id);
@@ -67,7 +67,7 @@ try {
     }
 
     // Insert transaction details
-    foreach ($cartItems as $product_id => $amount) {
+    foreach ($cartItems as $product_id => $quantity) {
         $queryProduct = "SELECT price FROM products WHERE id = ?";
         $stmtProduct = mysqli_prepare($conn, $queryProduct);
         if ($stmtProduct) {
@@ -79,13 +79,13 @@ try {
 
             if ($product) {
                 $price = $product['price'];
-                $subtotal = $price * $amount;
+                $subtotal = $price * $quantity;
                 $total_price += $subtotal;
 
-                $queryInsertDetail = "INSERT INTO transaction_details (transaction_id, product_id, amount, price) VALUES (?, ?, ?, ?)";
+                $queryInsertDetail = "INSERT INTO transaction_details (transaction_id, product_id, quantity, total_price) VALUES (?, ?, ?, ?)";
                 $stmtDetail = mysqli_prepare($conn, $queryInsertDetail);
                 if ($stmtDetail) {
-                    mysqli_stmt_bind_param($stmtDetail, 'iiid', $transaction_id, $product_id, $amount, $subtotal);
+                    mysqli_stmt_bind_param($stmtDetail, 'iiid', $transaction_id, $product_id, $quantity, $subtotal);
                     mysqli_stmt_execute($stmtDetail);
                     mysqli_stmt_close($stmtDetail);
                 } else {
@@ -116,8 +116,9 @@ try {
     // Clear cart session
     unset($_SESSION['cart']);
 
-    // Redirect to success page
-    header("Location: success.php?transaction_id=$transaction_id");
+    // Redirect to index page
+    $_SESSION['success'] = 'Transaksi berhasil!';
+    header('Location: ../index.php');
     exit();
 
 } catch (Exception $e) {
