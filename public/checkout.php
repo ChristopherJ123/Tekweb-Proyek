@@ -107,7 +107,7 @@ if (isset($_SESSION['cart'])) {
         .edit-address-btn {
             position: absolute;
             top: 10px;
-            right: 10px;
+            right: 60px;
             background: #ff9f43;
             color: white;
             border: none;
@@ -115,6 +115,21 @@ if (isset($_SESSION['cart'])) {
             font-size: 12px;
             padding: 5px 10px;
             cursor: pointer;
+        }
+        .delete-address-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-address-btn:hover {
+            background: #c0392b;
         }
         .edit-address-btn:hover {
             background: #e68a33;
@@ -212,7 +227,11 @@ function selectCard(cardType, id) {
         }
     }
 }
-
+function deleteAddress(id) {
+    if (confirm('Are you sure you want to delete this address?')) {
+        location.href = `scripts/delete_address.php?id=${id}`;
+    }
+}
 function processCheckout() {
     if (selectedAddressId) {
         location.href = `scripts/process_checkout.php?address_id=${selectedAddressId}`;
@@ -253,6 +272,7 @@ function processCheckout() {
                 foreach ($addresses as $address) { ?>
                     <div class="address-card" id="address-card-<?= $address['id'] ?>" onclick="selectCard('address', <?= $address['id'] ?>)">
                     <button class="edit-address-btn" onclick="event.stopPropagation(); location.href='edit_address.php?id=<?= $address['id'] ?>'">Edit</button>
+                    <button class="delete-address-btn" onclick="event.stopPropagation(); deleteAddress(<?= $address['id'] ?>)">Delete</button>
                         <p><strong>Name:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
                         <p><strong>Address:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
                         <p><strong>Subdistrict & City:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
