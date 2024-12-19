@@ -45,13 +45,13 @@ global $conn;
             }
         }
         if (isset($_SESSION['user_id'])) { ?>
-            <div class="relative">
+            <div id="add" class="relative">
                 <button class="hidden lg:flex p-2">
                     <span class="material-symbols-outlined pr-1">
                         add_box
                     </span>
                 </button>
-                    <div class="absolute p-2 bg-white rounded translate-x-1/2 right-0">
+                <div id="addDrpDown" class="absolute p-2 bg-white rounded translate-x-1/2 right-0 hidden">
                     <a href="../public/register_product.php" class="hidden lg:flex p-2">
                         <span class="material-symbols-outlined pr-1">
                             add_circle
@@ -229,6 +229,14 @@ global $conn;
 <!--  HEADER END  -->
 <!-- SCRIPTS -->
 <script>
+    $('#add').click(
+        function () {
+            $('#addDrpDown').fadeToggle(100);
+            $('#profileDrpDwn').fadeOut(100);
+            $('#cartDrpDwn').fadeOut(100);
+        }
+    )
+
     $('#profile').mouseenter(
         function () {
             $('#profileDrpDwn').fadeIn(100);
