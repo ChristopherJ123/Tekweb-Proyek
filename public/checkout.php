@@ -181,10 +181,10 @@ if (isset($_SESSION['cart'])) {
             <?php } else { 
                 foreach ($addresses as $address) { ?>
                     <div class="address-card">
-                        <p><strong>Name:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
-                        <p><strong>Address:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
-                        <p><strong>Subdistrict & City:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
-                        <p><strong>Province & Postal Code:</strong> <?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
+                        <p><strong>Nama:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
+                        <p><strong>Alamat:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
+                        <p><strong>Kecamatan & Kota:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
+                        <p><strong>Provinsi & Kode Pos:</strong> <?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
                         <p><strong>Notes:</strong> <?= htmlspecialchars($address['catatan']) ?></p>
                     </div>
                 <?php } ?>
