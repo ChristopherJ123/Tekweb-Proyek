@@ -10,6 +10,18 @@ if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
+
+if (isset($_GET['target'])) { // Kalau user tidak ditemukan maka reset page
+    $targetID = $_GET['target'];
+    $queryGetTargetID = "
+                    SELECT users.username, users.profile_picture FROM users
+                    WHERE id = '$targetID'";
+    $result = mysqli_query($conn, $queryGetTargetID);
+    if (mysqli_num_rows($result) == 0) {
+        header("Location: chat.php");
+        exit();
+    }
+}
 ?>
 
 <!doctype html>
