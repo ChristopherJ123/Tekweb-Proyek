@@ -86,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transaction_id'])) {
                         $result = $stmt->get_result();
 
                         //pesanan
+                                              <?php
                         if ($result->num_rows > 0) {
                             $index = 1;
                             while ($row = $result->fetch_assoc()) {
@@ -105,7 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transaction_id'])) {
                                 $index++;
                             }
                         } else {
-                            echo "<tr><td colspan='6' class='py-4 text-center text-gray-500'>Belum memiliki pesanan.</td></tr>";
+                            echo "<tr>
+                                <td colspan='6' class='py-4 text-center text-gray-500'>Belum memiliki pesanan.</td>
+                            </tr>";
                         }
                         $stmt->close();
                     } else {
