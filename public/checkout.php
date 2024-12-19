@@ -1,19 +1,66 @@
 <?php
 session_start();
-include "../src/db.php";
+include '../src/db.php';
 global $conn;
-?>
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    $_SESSION['errors'] = ['You need to log in to access this page.'];
+    header('Location: ../login.php');
+    exit();
+}
 
+$user_id = $_SESSION['user_id']; 
+$total = 0; // Initialize total for cart
+if (!$conn) {
+    die('Database connection failed: ' . mysqli_connect_error());
+}
+
+// Fetch addresses associated with the user
+$queryAddress = "SELECT * FROM address WHERE user_id = ?";
+$stmtAddress = mysqli_prepare($conn, $queryAddress);
+if ($stmtAddress) {
+    mysqli_stmt_bind_param($stmtAddress, 'i', $user_id);
+    mysqli_stmt_execute($stmtAddress);
+    $resultAddress = mysqli_stmt_get_result($stmtAddress);
+
+    $addresses = [];
+    if ($resultAddress && mysqli_num_rows($resultAddress) > 0) {
+        while ($row = mysqli_fetch_assoc($resultAddress)) {
+            $addresses[] = $row;
+        }
+    }
+    mysqli_stmt_close($stmtAddress);
+} else {
+    $addresses = [];
+}
+
+// Fetch cart items from session
+$cartItems = [];
+if (isset($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $productID => $amount) {
+        $queryProduct = "SELECT name, image_link, price FROM products WHERE id = ?";
+        $stmtProduct = mysqli_prepare($conn, $queryProduct);
+        if ($stmtProduct) {
+            mysqli_stmt_bind_param($stmtProduct, 'i', $productID);
+            mysqli_stmt_execute($stmtProduct);
+            $resultProduct = mysqli_stmt_get_result($stmtProduct);
+            $product = mysqli_fetch_assoc($resultProduct);
+            if ($product) {
+                $cartItems[] = array_merge($product, ['amount' => $amount]);
+                $total += $product['price'] * $amount;
+            }
+            mysqli_stmt_close($stmtProduct);
+        }
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
+    <link rel="stylesheet" href="../public/styles.css">
     <style>
         * {
             margin: 0;
@@ -43,6 +90,35 @@ global $conn;
         .checkout-header h1 {
             font-size: 24px;
         }
+        .address-section, .add-address-btn {
+            padding: 20px;
+        }
+        .address-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .address-card p {
+            margin: 5px 0;
+        }
+        .add-address-btn a {
+            display: block;
+            text-align: center;
+            background: #ff9f43;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .add-address-btn a:hover {
+            background: #e68a33;
+        }
         .cart-items {
             padding: 20px;
         }
@@ -66,48 +142,6 @@ global $conn;
         .cart-item-details {
             flex-grow: 1;
         }
-        .checkout-details {
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .form-group textarea {
-            resize: none;
-        }
-        .total-section {
-            text-align: right;
-            padding: 20px;
-            font-size: 18px;
-            border-top: 2px solid #ff9f43;
-        }
-        .checkout-btn {
-            display: block;
-            width: 100%;
-            text-align: center;
-            background: #ff9f43;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-        .checkout-btn:hover {
-            background: #e68a33;
-        }
     </style>
 </head>
 <body>
@@ -115,47 +149,44 @@ global $conn;
         <div class="checkout-header">
             <h1>Checkout</h1>
         </div>
+       
         <div class="cart-items">
-            <?php
-            $total = 0;
-            if (isset($_SESSION['cart'])) {
-                foreach ($_SESSION['cart'] as $productID => $amount) {
-                    $queryProduct = "SELECT name, image_link, price FROM products WHERE id = '$productID'";
-                    $product = mysqli_fetch_assoc(mysqli_query($conn, $queryProduct));
-                    $total += $product['price'] * $amount;
-                    ?>
+            <?php if (empty($cartItems)) { ?>
+                <p>Your cart is empty.</p>
+            <?php } else { 
+                foreach ($cartItems as $item) { ?>
                     <div class="cart-item">
-                        <img src="<?=$product['image_link']?>" alt="<?=$product['name']?>">
+                        <img src="<?= htmlspecialchars($item['image_link']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                         <div class="cart-item-details">
-                            <h3><?=$product['name']?></h3>
-                            <p>Price: Rp<?=number_format($product['price'], 0, ',', '.')?> x <?=$amount?></p>
+                            <h3><?= htmlspecialchars($item['name']) ?></h3>
+                            <p>Price: Rp<?= number_format($item['price'], 0, ',', '.') ?> x <?= $item['amount'] ?></p>
                         </div>
                     </div>
-                <?php }
-            } else { ?>
-                <p>Your cart is empty.</p>
+                <?php } ?>
             <?php } ?>
         </div>
-        <div class="checkout-details">
-            <form action="process_checkout.php" method="POST">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" required>
+        <div class="address-section">
+            <?php if (empty($addresses)) { ?>
+                <div class="text-center">
+                    <p class="text-lg mb-4">You don’t have any saved addresses.</p>
+                    <div class="add-address-btn">
+                        <a href="add_address.php">Add Address</a>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+            <?php } else { 
+                foreach ($addresses as $address) { ?>
+                    <div class="address-card">
+                        <p><strong><?= htmlspecialchars($address['full_name']) ?></strong></p>
+                        <p><?= htmlspecialchars($address['alamat']) ?></p>
+                        <p><?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
+                        <p><?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
+                        <p><em><?= htmlspecialchars($address['catatan']) ?></em></p>
+                    </div>
+                <?php } ?>
+                <div class="add-address-btn">
+                    <a href="add_address_page.php">Add Address</a>
                 </div>
-                <div class="form-group">
-                    <label for="address">Shipping Address</label>
-                    <textarea id="address" name="address" rows="4" required></textarea>
-                </div>
-                <div class="total-section">
-                    <strong>Total: Rp<?=number_format($total, 0, ',', '.');?></strong>
-                </div>
-                <input type="hidden" name="total" value="<?=$total?>">
-                <button type="submit" class="checkout-btn">Place Order</button>
-            </form>
+            <?php } ?>
         </div>
     </div>
 </body>
