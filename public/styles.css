@@ -643,6 +643,18 @@ video {
   margin-top: 1rem;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
+.mt-12 {
+  margin-top: 3rem;
+}
+
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -750,6 +762,10 @@ video {
   width: 100%;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .min-w-\[200px\] {
   min-width: 200px;
 }
@@ -768,6 +784,22 @@ video {
 
 .max-w-md {
   max-width: 28rem;
+}
+
+.max-w-\[50vw\] {
+  max-width: 50vw;
+}
+
+.max-w-\[30vw\] {
+  max-width: 30vw;
+}
+
+.max-w-\[40vw\] {
+  max-width: 40vw;
+}
+
+.max-w-\[36vw\] {
+  max-width: 36vw;
 }
 
 .translate-x-1\/2 {
@@ -838,6 +870,10 @@ video {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
 }
 
 .divide-y > :not([hidden]) ~ :not([hidden]) {
@@ -946,11 +982,6 @@ video {
 .bg-amber-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(245 158 11 / var(--tw-bg-opacity, 1));
-}
-
-.bg-blue-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(147 197 253 / var(--tw-bg-opacity, 1));
 }
 
 .bg-blue-500 {
@@ -1081,14 +1112,14 @@ video {
   line-height: 2rem;
 }
 
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
-
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .text-sm {
@@ -1107,6 +1138,10 @@ video {
 
 .font-medium {
   font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
 }
 
 .uppercase {
@@ -1260,6 +1295,14 @@ video {
     display: flex;
   }
 
+  .sm\:hidden {
+    display: none;
+  }
+
+  .sm\:w-5\/6 {
+    width: 83.333333%;
+  }
+
   .sm\:w-\[200px\] {
     width: 200px;
   }
@@ -1271,6 +1314,14 @@ video {
 
   .sm\:min-w-\[400px\] {
     min-width: 400px;
+  }
+
+  .sm\:max-w-\[5\/6\] {
+    max-width: 5/6;
+  }
+
+  .sm\:max-w-\[83\%\] {
+    max-width: 83%;
   }
 
   .sm\:translate-x-1\/4 {
@@ -1305,6 +1356,18 @@ video {
   .md\:hidden {
     display: none;
   }
+
+  .md\:w-3\/4 {
+    width: 75%;
+  }
+
+  .md\:max-w-\[3\/4\] {
+    max-width: 3/4;
+  }
+
+  .md\:max-w-\[75\%\] {
+    max-width: 75%;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1316,7 +1379,24 @@ video {
     display: none;
   }
 
+  .lg\:w-3\/4 {
+    width: 75%;
+  }
+
+  .lg\:max-w-\[3\/4\] {
+    max-width: 3/4;
+  }
+
+  .lg\:max-w-\[75\%\] {
+    max-width: 75%;
+  }
+
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
   }
 }
