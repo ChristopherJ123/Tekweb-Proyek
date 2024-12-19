@@ -267,19 +267,27 @@ if (isset($_GET['target'])) { // Kalau user tidak ditemukan maka reset page
                     WHERE user_id = '$userID'
                 ";
                 $result = mysqli_query($conn, $queryGetTargetID);
-                    foreach ($result as $row) { ?>
-                        <div onclick="location.href='chat.php?target=<?=$row['id']?>'" class="chat-profile-stack">
+
+                foreach ($result as $row) {
+                    $queryGetLastContent = mysqli_fetch_array(mysqli_query($conn,"
+                        SELECT content FROM private_chats
+                        WHERE (user_id = '$userID' AND target_id = '{$row['id']}')
+                        OR (user_id = '{$row['id']}' AND target_id = '$userID')
+                        ORDER BY created_at DESC LIMIT 1"));
+                    ?>
+                    <div onclick="location.href='chat.php?target=<?=$row['id']?>'" class="chat-profile-stack">
                             <span class="profile-circle">
                                 <img class="rounded-full" src="<?=$row['profile_picture']?>" alt="pp">
                             </span>
-                            <span class="d-flex flex-column">
+                        <span class="d-flex flex-column">
                                 <small><?=$row['username']?></small>
-                                <em class="fst-italic">seen</em>
+                                <em class="fst-italic"><?=$queryGetLastContent['content']?></em>
                             </span>
-                        </div>
-                    <?php } ?>
+                    </div>
+                <?php } ?>
             </div>
         </div>
+
 
         <div class="right-side flex flex-col justify-between">
             <div>
@@ -292,18 +300,18 @@ if (isset($_GET['target'])) { // Kalau user tidak ditemukan maka reset page
                     $result = mysqli_query($conn, $queryGetTargetID);
                     $row = mysqli_fetch_assoc($result);
                     ?>
-                    <div class="chat-profile-page">
+                    <div class="chat-profile-page flex align-items-center">
                         <a class="profile-circle">
                             <img class="rounded-full" src="<?=$row['profile_picture']?>" alt="">
                         </a>
-                        <span class="d-flex flex-column">
-                        <small><?=$row['username']?></small>
-                        <em class="fst-italic">seen</em>
+                        <span class="">
+                            <h5><?=$row['username']?></h5>
                         </span>
                     </div>
                     <?php
                 }
                 ?>
+
 
                 <?php
                 if (isset($_GET['target'])) {
