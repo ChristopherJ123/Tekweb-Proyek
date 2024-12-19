@@ -168,6 +168,12 @@ if (isset($_SESSION['cart'])) {
             background-color: #ddd;
             cursor: not-allowed;
         }
+        .total-price {
+            text-align: right;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
     <script>
        let selectedAddressId = null;
@@ -242,9 +248,13 @@ function processCheckout() {
                 </div>
             <?php } ?>
         </div>
+        <div class="total-price">
+            Total Price: Rp<?= number_format($total, 0, ',', '.') ?>
+        </div>
         <div class="process-checkout-btn">
             <button id="process-checkout-button" onclick="processCheckout()" disabled>Process Checkout</button>
         </div>
+        
     </div>
 </body>
 </html>
