@@ -20,11 +20,11 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
         $status = 1; // Product ditemukan
 
         $row = mysqli_fetch_assoc($result); // Mengambil row berikutnya hasil dari query
-        $productID = $row['id'];
+        $productID_ = $row['id'];
         $productDescription = $row['description'];
         $productImageLink = $row['image_link'];
         $productQuantity = $row['quantity_in_stock'];
-        $productPrice = $row['price'];
+        $productPrice = number_format($row['price'], 0, ',', '.');
         $productCreatedAt = $row['created_at'];
         $productAuthorID = $row['author'];
 
@@ -82,10 +82,6 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
             font-size: 1rem; /* 16px */
             line-height: 1.5rem; /* 24px */
         }
-        /* Responsiveness */
-        @media (max-width: 480px) {
-
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -97,15 +93,8 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
 <div class="flex flex-col justify-center">
 
     <div class="flex justify-center">
-    <?php
-    if ($status === 1) { ?>
-        <!--                <div>--><?php //=$productName?><!--</div>-->
-        <!--                <div>--><?php //=$productImageLink?><!--</div>-->
-        <!--                <div>--><?php //=$productQuantity?><!--</div>-->
-        <!--                <div>--><?php //=$productPrice?><!--</div>-->
-        <!--                <div>--><?php //=$productCreatedAt?><!--</div>-->
-        <!--                <br>-->
-        <!--                <div>--><?php //=$productAuthorName?><!--</div>-->
+        <?php
+        if ($status === 1) { ?>
             <div class="flex sm:max-w-[83%] md:max-w-[75%] lg:max-w-[75%] shadow border p-2 mx-4 bg-white rounded-lg">
                 <div class="min-w-[200px]">
                     <img class="w-[200px] h-[200px] object-cover object-center" src="<?=$productImageLink?>">
@@ -113,21 +102,22 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                         <div class="flex justify-between items-center mb-2">
                             <div class="text-sm sm:text-base">Rp <?=$productPrice?></div>
                             <div class="flex items-center h-5/6">
-                                <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
+                                <button onclick="addOrDecreaseProduct(<?=$productID_?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
                                     remove
                                 </span>
                                 </button>
-                                <div id="product<?=$productID?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
-                                <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
+                                <div id="product<?=$productID_?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
+                                <button onclick="addOrDecreaseProduct(<?=$productID_?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
                                     add
                                 </span>
                                 </button>
+
                             </div>
                         </div>
                         <div>
-                            <button onclick="addToCart(<?=$productID?>)" class="flex justify-center text-sm w-full items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                            <button onclick="addToCart(<?=$productID_?>)" class="flex justify-center text-sm w-full items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
                     <span class="material-symbols-outlined text-sm">
                         add</span>
                                 <span>
@@ -159,12 +149,12 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
 
 
             </div>
-    <?php } else { ?>
-        <div>
-            Produk tidak ditemukan!
-        </div>
-    <?php }
-    ?>
+        <?php } else { ?>
+            <div>
+                Produk tidak ditemukan!
+            </div>
+        <?php }
+        ?>
     </div>
 
 
@@ -174,12 +164,12 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                     SELECT p.id, p.image_link, p.name, p.price, u.username, u.profile_picture 
                     FROM products p 
                     JOIN users u on u.id = p.author
-                    WHERE p.id != '$productID'
+                    WHERE p.id != '$productID_'
                     ORDER BY p.created_at DESC 
                     ";
         $result = mysqli_query($conn, $queryProducts);
         foreach ($result as $product) {
-            $productID = $product['id'];
+            $productID_ = $product['id'];
             $productImage = $product['image_link'];
             $productName = $product['name'];
             $productPrice = number_format($product['price'], 0, ',', '.');
@@ -195,22 +185,22 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
                         <a href="profile.php?p=<?=urlencode($authorName)?>" class="text-ellipsis overflow-hidden text-sm sm:text-base"><?=$authorName?></a>
                     </div>
                     <div class="flex justify-between items-center mb-2">
-                        <div class="text-sm sm:text-base">Rp<?=$productPrice?></div>
+                        <div class="text-sm sm:text-base">Rp <?=$productPrice?></div>
                         <div class="flex items-center h-5/6">
-                            <button onclick="addOrDecreaseProduct(<?=$productID?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
+                            <button onclick="addOrDecreaseProduct(<?=$productID_?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
                                     remove
                                 </span>
                             </button>
-                            <div id="product<?=$productID?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
-                            <button onclick="addOrDecreaseProduct(<?=$productID?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
+                            <div id="product<?=$productID_?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
+                            <button onclick="addOrDecreaseProduct(<?=$productID_?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
                                 <span class="material-symbols-outlined text-sm">
                                     add
                                 </span>
                             </button>
                         </div>
                     </div>
-                    <button onclick="addToCart(<?=$productID?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
+                    <button onclick="addToCart(<?=$productID_?>)" class="flex text-sm items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
                         <span class="material-symbols-outlined text-sm">
                             add
                         </span>
