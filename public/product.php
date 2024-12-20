@@ -143,8 +143,6 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
         <?php } ?>
     </div>
 
-
-
     <div class="grid grid-cols-2 sm:flex flex-wrap gap-2 m-4 justify-center">
         <?php
         $queryProducts = "
