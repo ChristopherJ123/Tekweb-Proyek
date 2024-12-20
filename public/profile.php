@@ -51,7 +51,7 @@ $stmt->close();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <title>User Profile</title>
+    <title>Pasar Kaki Lima | User Profile</title>
     <style>
         * {
             margin: 0;

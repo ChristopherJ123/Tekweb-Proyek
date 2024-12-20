@@ -59,10 +59,10 @@ if (isset($_SESSION['cart'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Pasar Kaki Lima | Checkout</title>
     <link rel="stylesheet" href="../public/styles.css">
     <style>
-        * {
+         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -100,9 +100,51 @@ if (isset($_SESSION['cart'])) {
             padding: 10px;
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        .edit-address-btn {
+            position: absolute;
+            top: 10px;
+            right: 60px;
+            background: #ff9f43;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-address-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 12px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .delete-address-btn:hover {
+            background: #c0392b;
+        }
+        .edit-address-btn:hover {
+            background: #e68a33;
+        }
+        .address-card.selected {
+            background-color: #ffebd6;
+            border-color: #ff9f43;
         }
         .address-card p {
             margin: 5px 0;
+            font-size: 14px;
+        }
+        .address-card strong {
+            font-size: 16px;
+            color: #ff9f43;
         }
         .add-address-btn a {
             display: block;
@@ -142,20 +184,73 @@ if (isset($_SESSION['cart'])) {
         .cart-item-details {
             flex-grow: 1;
         }
+        .process-checkout-btn button {
+            background-color: #ff9f43;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .process-checkout-btn button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+        .total-price {
+            text-align: right;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
     </style>
+    <script>
+       let selectedAddressId = null;
+
+function selectCard(cardType, id) {
+    if (cardType === 'address') {
+        const selectedCard = document.getElementById(`address-card-${id}`);
+        
+        if (selectedCard.classList.contains('selected')) {
+            selectedCard.classList.remove('selected');
+            selectedAddressId = null;
+            document.getElementById('process-checkout-button').disabled = true;
+        } else {
+            const allCards = document.querySelectorAll('.address-card');
+            allCards.forEach(card => card.classList.remove('selected'));
+            
+            selectedCard.classList.add('selected');
+            selectedAddressId = id;
+            document.getElementById('process-checkout-button').disabled = false;
+        }
+    }
+}
+function deleteAddress(id) {
+    if (confirm('Are you sure you want to delete this address?')) {
+        location.href = `scripts/delete_address.php?id=${id}`;
+    }
+}
+function processCheckout() {
+    if (selectedAddressId) {
+        location.href = `scripts/process_checkout.php?address_id=${selectedAddressId}`;
+    }
+}
+
+    </script>
 </head>
 <body>
     <div class="checkout-container">
         <div class="checkout-header">
             <h1>Checkout</h1>
         </div>
-       
         <div class="cart-items">
             <?php if (empty($cartItems)) { ?>
                 <p>Your cart is empty.</p>
             <?php } else { 
-                foreach ($cartItems as $item) { ?>
-                    <div class="cart-item">
+                foreach ($cartItems as $index => $item) { ?>
+                    <div class="cart-item" id="cart-card-<?= $index ?>">
                         <img src="<?= htmlspecialchars($item['image_link']) ?>" alt="<?= htmlspecialchars($item['name']) ?>">
                         <div class="cart-item-details">
                             <h3><?= htmlspecialchars($item['name']) ?></h3>
@@ -175,19 +270,31 @@ if (isset($_SESSION['cart'])) {
                 </div>
             <?php } else { 
                 foreach ($addresses as $address) { ?>
-                    <div class="address-card">
-                        <p><strong><?= htmlspecialchars($address['full_name']) ?></strong></p>
-                        <p><?= htmlspecialchars($address['alamat']) ?></p>
-                        <p><?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
-                        <p><?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
-                        <p><em><?= htmlspecialchars($address['catatan']) ?></em></p>
+                    <div class="address-card" id="address-card-<?= $address['id'] ?>" onclick="selectCard('address', <?= $address['id'] ?>)">
+                    <button class="edit-address-btn" onclick="event.stopPropagation(); location.href='edit_address.php?id=<?= $address['id'] ?>'">Edit</button>
+                    <button class="delete-address-btn" onclick="event.stopPropagation(); deleteAddress(<?= $address['id'] ?>)">Delete</button>
+                        <p><strong>Name:</strong> <?= htmlspecialchars($address['full_name']) ?></p>
+                        <p><strong>Address:</strong> <?= htmlspecialchars($address['alamat']) ?></p>
+                        <p><strong>Subdistrict & City:</strong> <?= htmlspecialchars($address['kecamatan']) ?>, <?= htmlspecialchars($address['kota']) ?></p>
+                        <p><strong>Province & Postal Code:</strong> <?= htmlspecialchars($address['provinsi']) ?>, <?= htmlspecialchars($address['kode_pos']) ?></p>
+                        <p><strong>Notes:</strong> <?= htmlspecialchars($address['catatan']) ?></p>
                     </div>
                 <?php } ?>
                 <div class="add-address-btn">
-                    <a href="add_address_page.php">Add Address</a>
+                    <a href="add_address.php">Add Address</a>
                 </div>
             <?php } ?>
         </div>
+        <div class="total-price">
+            Total Price: Rp<?= number_format($total, 0, ',', '.') ?>
+        </div>
+        <div class="process-checkout-btn">
+            <button id="process-checkout-button" onclick="processCheckout()" disabled>Process Checkout</button>
+        </div>
+        
     </div>
 </body>
 </html>
+
+
+

@@ -604,10 +604,6 @@ video {
   position: relative;
 }
 
-.sticky {
-  position: sticky;
-}
-
 .bottom-0 {
   bottom: 0px;
 }
@@ -755,8 +751,8 @@ video {
   height: 100%;
 }
 
-.h-8 {
-  height: 2rem;
+.h-screen {
+  height: 100vh;
 }
 
 .min-h-\[3em\] {
@@ -802,10 +798,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-8 {
-  width: 2rem;
 }
 
 .min-w-\[100px\] {
@@ -914,10 +906,6 @@ video {
   gap: 0.5rem;
 }
 
-.gap-4 {
-  gap: 1rem;
-}
-
 .gap-y-2 {
   row-gap: 0.5rem;
 }
@@ -938,10 +926,6 @@ video {
 
 .text-ellipsis {
   text-overflow: ellipsis;
-}
-
-.break-words {
-  overflow-wrap: break-word;
 }
 
 .rounded {
@@ -1080,6 +1064,10 @@ video {
 
 .p-4 {
   padding: 1rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
 }
 
 .p-6 {
@@ -1242,16 +1230,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.text-green-600 {
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
-}
-
-.text-gray-600 {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
-}
-
 .underline {
   text-decoration-line: underline;
 }
@@ -1326,11 +1304,6 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.hover\:text-orange-700:hover {
-  --tw-text-opacity: 1;
-  color: rgb(194 65 12 / var(--tw-text-opacity, 1));
-}
-
 .focus\:border-blue-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
@@ -1382,20 +1355,8 @@ video {
     width: min-content;
   }
 
-  .sm\:w-\[80\%\] {
-    width: 80%;
-  }
-
   .sm\:min-w-\[400px\] {
     min-width: 400px;
-  }
-
-  .sm\:max-w-\[83\%\] {
-    max-width: 83%;
-  }
-
-  .sm\:max-w-\[75\%\] {
-    max-width: 75%;
   }
 
   .sm\:translate-x-1\/4 {
@@ -1411,26 +1372,8 @@ video {
     grid-template-columns: 1fr 2fr 1fr;
   }
 
-  .sm\:flex-row {
-    flex-direction: row;
-  }
-
-  .sm\:items-start {
-    align-items: flex-start;
-  }
-
   .sm\:gap-4 {
     gap: 1rem;
-  }
-
-  .sm\:px-2 {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
-  .sm\:px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
   }
 
   .sm\:text-2xl {
@@ -1446,16 +1389,6 @@ video {
   .sm\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
-  }
-
-  .sm\:text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
-
-  .sm\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
   }
 }
 
@@ -1511,11 +1444,6 @@ video {
 
   .lg\:text-lg {
     font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-
-  .lg\:text-xl {
-    font-size: 1.25rem;
     line-height: 1.75rem;
   }
 }

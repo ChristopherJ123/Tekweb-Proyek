@@ -14,7 +14,7 @@ if (isset($_GET['s'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Title</title>
+    <title>Pasar Kaki Lima | All Products</title>
     <link rel="stylesheet" href="styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -147,6 +147,7 @@ if (isset($_GET['s'])) {
                 </div>
             </div>
         <?php }
+        mysqli_close($conn);
         ?>
     </div>
 </body>

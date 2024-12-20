@@ -121,9 +121,15 @@ global $conn;
                     </div>
                     <div class="flex gap-2">
                         <span class="material-symbols-outlined">
+                            chat
+                        </span>
+                        <a href="chat.php">Chat</a>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="material-symbols-outlined">
                             settings
                         </span>
-                        <a href="#">Pengaturan</a>
+                        <a href="profile.php">Pengaturan</a>
                     </div>
                     <div class="flex gap-2">
                         <span class="material-symbols-outlined">

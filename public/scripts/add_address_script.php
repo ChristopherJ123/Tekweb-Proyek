@@ -47,17 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($stmt) {
         $stmt->bind_param("isssssis", $user_id, $full_name, $alamat, $provinsi, $kota, $kecamatan, $kode_pos, $catatan);
         if ($stmt->execute()) {
-            $_SESSION['success'] = 'Address added successfully!';
-            header('Location: ../checkout.php'); // Redirect back to the form
+            $_SESSION['success'] = 'Alamat berhasil ditambahkan!';
+            header('Location: ../index.php');
             exit;
         } else {
             $_SESSION['errors'] = ['Failed to save address.'];
-            header('Location: ../add_address_page.php'); // Redirect back with errors
+            header('Location: ../add_address_page.php'); 
             exit;
         }
     } else {
         $_SESSION['errors'] = ['Failed to prepare the statement.'];
-        header('Location: ../add_address_page.php'); // Redirect back with errors
+        header('Location: ../add_address_page.php'); 
         exit;
     }
 } else {
