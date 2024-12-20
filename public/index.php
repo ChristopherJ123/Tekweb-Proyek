@@ -170,7 +170,7 @@ global $conn
                                 ?>
                                 <div class='flex items-center gap-2'>
                                     <img class='w-[30px] h-[30px] object-cover object-center rounded-3xl' src='<?=$forumChatPP?>' alt='pp'>
-                                    <a href="profile.php?u=<?=$authorName?>" class="text-sm sm:text-base w-16 sm:w-min overflow-hidden text-ellipsis"><?=$forumChatUsername?></a>
+                                    <a href="profile.php?u=<?=$forumChatUsername?>" class="text-sm sm:text-base w-16 sm:w-min overflow-hidden text-ellipsis"><?=$forumChatUsername?></a>
                                     <div class="text-sm sm:text-base">
                                         <?=$forumChatContent?>
                                     </div>
