@@ -87,26 +87,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transaction_id'])) {
 
                         //pesanan
                         if ($result->num_rows > 0) {
-                            $index = 1;
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$index}</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$row['product_name']}</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$row['quantity']}</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>Rp " . number_format($row['total_price'], 0, ',', '.') . "</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$row['order_date']}</td>
-                                    <td class='py-2 px-4 text-sm'>
-                                        <form method='POST' onsubmit='return confirm(\"Apakah Anda yakin ingin membatalkan pesanan ini?\")'>
-                                            <input type='hidden' name='transaction_id' value='{$row['transaction_id']}'>
-                                            <button type='submit' class='bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600'>Batal</button>
-                                        </form>
-                                    </td>
+                                    <td>{$row['transaction_id']}</td>
+                                    <td>{$row['product_name']}</td>
+                                    <td>{$row['quantity']}</td>
+                                    <td>{$row['total_price']}</td>
+                                    <td>{$row['order_date']}</td>
                                 </tr>";
-                                $index++;
                             }
                         } else {
-                            echo "<tr><td colspan='6' class='py-4 text-center text-gray-500'>Belum memiliki pesanan.</td></tr>";
+                            echo "<tr><td colspan='5'>Belum ada barang yang dibeli.</td></tr>";
                         }
+                        
                         $stmt->close();
                     } else {
                         echo "<tr><td colspan='6' class='py-4 text-center text-gray-500'>Silakan login untuk melihat pesanan Anda.</td></tr>";
