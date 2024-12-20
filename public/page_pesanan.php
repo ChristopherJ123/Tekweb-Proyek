@@ -5,12 +5,11 @@ global $conn;
 session_start();
 $user_id = $_SESSION['user_id'] ?? null;
 
-// Proses pembatalan pesanan
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transaction_id'])) {
     $transaction_id = $_POST['transaction_id'];
 
     if ($user_id && $transaction_id) {
-        // Query untuk membatalkan pesanan
+        //untuk batal pesanan
         $sql = "DELETE FROM TRANSACTIONS WHERE id = ? AND user_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $transaction_id, $user_id);
@@ -85,17 +84,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transaction_id'])) {
                         $stmt->execute();
                         $result = $stmt->get_result();
 
-                        //pesanan
+                        //show data pesanan
                         if ($result->num_rows > 0) {
                             $index = 1;
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$index}</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$row['product_name']}</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$row['quantity']}</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>Rp " . number_format($row['total_price'], 0, ',', '.') . "</td>
-                                    <td class='py-2 px-4 text-sm text-gray-700'>{$row['order_date']}</td>
-                                    <td class='py-2 px-4 text-sm'>
+                                    <td class='py-2 px-4 text-gray-700'>{$index}</td>
+                                    <td class='py-2 px-4 text-gray-700'>{$row['product_name']}</td>
+                                    <td class='py-2 px-4 text-gray-700'>{$row['quantity']}</td>
+                                    <td class='py-2 px-4 text-gray-700'>Rp " . number_format($row['total_price'], 0, ',', '.') . "</td>
+                                    <td class='py-2 px-4 text-gray-700'>{$row['order_date']}</td>
+                                    <td class='py-2 px-4 text-center'>
                                         <form method='POST' onsubmit='return confirm(\"Apakah Anda yakin ingin membatalkan pesanan ini?\")'>
                                             <input type='hidden' name='transaction_id' value='{$row['transaction_id']}'>
                                             <button type='submit' class='bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600'>Batal</button>
@@ -105,11 +104,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transaction_id'])) {
                                 $index++;
                             }
                         } else {
-                            echo "<tr><td colspan='6' class='py-4 text-center text-gray-500'>Belum memiliki pesanan.</td></tr>";
+                            echo "<tr>
+                                <td colspan='6' class='py-4 text-center text-gray-500'>Belum ada barang yang dibeli.</td>
+                            </tr>";
                         }
                         $stmt->close();
                     } else {
-                        echo "<tr><td colspan='6' class='py-4 text-center text-gray-500'>Silakan login untuk melihat pesanan Anda.</td></tr>";
+                        echo "<tr>
+                            <td colspan='6' class='py-4 text-center text-gray-500'>Silakan login untuk melihat pesanan Anda.</td>
+                        </tr>";
                     }
                     ?>
                 </tbody>
