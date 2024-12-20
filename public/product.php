@@ -92,67 +92,57 @@ if (isset($_GET['p']) && isset($_GET['author'])) {
 
 <div class="flex flex-col justify-center">
 
-    <div class="flex justify-center">
-        <?php
-        if ($status === 1) { ?>
-            <div class="flex sm:w-[83%] md:max-w-[75%] lg:max-w-[75%] shadow border p-2 mx-4 bg-white rounded-lg">
-                <div class="min-w-[100px]">
-                    <img class="w-[200px] h-[200px] object-cover object-center" src="<?=$productImageLink?>">
-                    <div class="flex flex-col gap-y-2 mt-4">
+    <div class="flex justify-center p-4">
+        <?php if ($status === 1) { ?>
+            <div class="flex flex-col sm:flex-row sm:max-w-[75%] shadow border p-4 bg-white rounded-lg gap-4">
+                <div class="flex flex-col items-center sm:items-start min-w-[100px]">
+                    <img class="w-[200px] h-[200px] object-cover object-center rounded-md" src="<?=$productImageLink?>" alt="product image">
+                    <div class="flex flex-col gap-y-2 mt-4 w-full">
                         <div class="flex justify-between items-center mb-2">
-                            <div class="text-sm sm:text-base">Rp <?=$productPrice?></div>
+                            <div class="text-sm font-semibold text-gray-700">Rp <?=$productPrice?></div>
                             <div class="flex items-center h-5/6">
-                                <button onclick="addOrDecreaseProduct(<?=$productID_?>, -1)" class="flex border-e border-orange-500 text-white bg-orange-500 rounded-l-xl px-1 h-5 w-5">
-                                    <span class="material-symbols-outlined text-sm">
-                                        remove
-                                    </span>
+                                <button onclick="addOrDecreaseProduct(<?=$productID_?>, -1)" class="flex items-center justify-center border-e border-orange-500 text-white bg-orange-500 rounded-l-xl h-8 w-8">
+                                    <span class="material-symbols-outlined text-sm">remove</span>
                                 </button>
-                                <div id="product<?=$productID_?>" class="px-1.5 text-orange-500 border-y border-orange-500 text-sm h-5">0</div>
-                                <button onclick="addOrDecreaseProduct(<?=$productID_?>, 1)" class="flex border-s border-orange-500 text-white bg-orange-500 rounded-r-xl px-0.5 h-5 w-5">
-                                    <span class="material-symbols-outlined text-sm">
-                                        add
-                                    </span>
+                                <div id="product<?=$productID_?>" class="px-2 text-orange-500 border-y border-orange-500 text-sm h-8 flex items-center">0</div>
+                                <button onclick="addOrDecreaseProduct(<?=$productID_?>, 1)" class="flex items-center justify-center border-s border-orange-500 text-white bg-orange-500 rounded-r-xl h-8 w-8">
+                                    <span class="material-symbols-outlined text-sm">add</span>
                                 </button>
-
                             </div>
                         </div>
                         <div>
-                            <button onclick="addToCart(<?=$productID_?>)" class="flex justify-center text-sm w-full items-center p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75">
-                        <span class="material-symbols-outlined text-sm">
-                            add</span>
-                                <span>
-                            Masukkan keranjang
-                        </span>
+                            <button onclick="addToCart(<?=$productID_?>)" class="flex justify-center items-center text-sm w-full p-2 text-orange-500 border border-orange-500 hover:text-white hover:bg-orange-500 transition duration-75 rounded-lg">
+                                <span class="material-symbols-outlined text-sm">add</span>
+                                <span>Masukkan Keranjang</span>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col mx-4 gap-y-2" >
-                    <h1 class="sm:text-2xl md:text-2xl lg:text-2xl font-semibold mt-2"><?=$productName?></h1>
-                    <hr>
+                <div class="flex flex-col gap-y-2">
+                    <h1 class="text-lg sm:text-2xl font-semibold mt-2"><?=$productName?></h1>
+                    <hr class="border-gray-300">
+
                     <div class="flex items-center gap-2 mb-2">
-                        <img class="w-[30px] h-[30px] object-cover object-center rounded-3xl" src="<?=$productAuthorImageLink?>" alt="pp">
-                        <h1 class="sm:text-medium lg:text-lg"><?=$productAuthorName?></h1>
-                        <a class="flex align-center" href="chat.php?target=<?=$productAuthorID?>">
-                                <span class="material-symbols-outlined">
-                                    chat
-                                </span>
+                        <img class="w-[30px] h-[30px] object-cover object-center rounded-full" src="<?=$productAuthorImageLink?>" alt="pp">
+                        <h1 class="text-sm sm:text-base font-medium text-gray-700"><?=$productAuthorName?></h1>
+                        <a class="text-orange-500 hover:text-orange-700 transition" href="chat.php?target=<?=$productAuthorID?>">
+                            <span class="material-symbols-outlined">chat</span>
                         </a>
                     </div>
 
-                    <h1 class="text-3xl font-semibold">Rp <?=$productPrice?></h1>
+                    <h1 class="text-xl sm:text-3xl font-semibold">Rp <?=$productPrice?></h1>
 
-                    <p class="sm:text-medium md:text-medium lg:text-lg"><?=$productDescription?></p>
+                    <p class="text-sm sm:text-base text-gray-600 break-words"><?=$productDescription?></p>
                 </div>
             </div>
         <?php } else { ?>
-            <div>
+            <div class="text-center text-gray-700">
                 Produk tidak ditemukan!
             </div>
-        <?php }
-        ?>
+        <?php } ?>
     </div>
+
 
 
     <div class="grid grid-cols-2 sm:flex flex-wrap gap-2 m-4 justify-center">
